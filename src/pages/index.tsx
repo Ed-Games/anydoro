@@ -1,14 +1,28 @@
-import type { NextPage } from 'next'
-import Image from 'next/image';
-import styles from './index.module.scss';
-import background from '../../assets/background.svg';
-import logo from '../../assets/logo.svg';
-import Head from 'next/head';
-import { FiArrowRight } from 'react-icons/fi'
+import type { NextPage } from "next";
+import Image from "next/image";
+import styles from "./index.module.scss";
+import background from "../../assets/background.svg";
+import logo from "../../assets/logo.svg";
+import Head from "next/head";
+import { FiArrowRight } from "react-icons/fi";
+import Router from "next/router";
+import { FormEvent, MouseEvent } from "react";
+import { Formik } from "formik";
 
 const Home: NextPage = () => {
+  const handleCreateNewRoom = (
+    e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+  ) => {
+    e.preventDefault();
+    Router.push(`/rooms/${Math.random()}`);
+  };
+
+  const handleJoinRoom = (code: string) => {
+    Router.push(`/rooms/${code}`);
+  };
+
   return (
-    <div className={styles.container} >
+    <div className="container">
       <Head>
         <title>Anydoro | Home</title>
       </Head>
@@ -16,19 +30,33 @@ const Home: NextPage = () => {
         <Image src={logo} alt="anydoro-logo" />
         <span>Aumente sua produtividade com trabalho em grupo</span>
       </aside>
-      <main className={styles.createRoom} >
+      <main className={styles.createRoom}>
         <h1>Bem-vindo</h1>
-        <button>criar nova sala</button>
+        <button
+          type="button"
+          className="red-button"
+          onClick={handleCreateNewRoom}
+        >
+          criar nova sala
+        </button>
         <span>Ou entre em uma sala já existente</span>
-        <div>
-          <input placeholder='Digitar código da sala...' />
-          <button>
-            <FiArrowRight size={30} />
-          </button>
-        </div>
+        <Formik initialValues={{code:''}} onSubmit={(values) => handleJoinRoom(values.code)}>
+          {({ handleChange, handleSubmit, errors, touched }) => (
+            <form onSubmit={handleSubmit} >
+              <input
+                placeholder="Digitar código da sala..."
+                name="code"
+                onChange={handleChange}
+              />
+              <button type="submit">
+                <FiArrowRight size={30} />
+              </button>
+            </form>
+          )}
+        </Formik>
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
