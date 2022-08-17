@@ -1,0 +1,70 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 30px;
+  width: 100vw;
+  height: 100vh;
+}
+
+.presentation {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  position: relative;
+  min-width: 50%;
+  flex: 1;
+  gap: 30px;
+  padding: 50px;
+
+  span {
+    font-family: "Rajdhani";
+    font-weight: 600;
+    font-size: 45px;
+    line-height: 57px;
+  }
+
+  .backgroundImage{
+    position: absolute;
+    width: 100%;
+
+  }
+}
+
+.createRoom{
+  display: flex;
+  flex-direction: column;
+  min-width: 50%;
+  padding: 50px;
+
+  button, input{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    max-width: 420px;
+  }
+
+  > button{
+    background: var(--red);
+  }
+
+  > div {
+    display: flex;
+    flex-direction: row;
+
+    input{
+      background: var(--white);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    button{
+      width: 80px;
+      height: 80px;
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+      background: var(--purple) ;
+    }
+  }
+
+}
