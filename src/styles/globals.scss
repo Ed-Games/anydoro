@@ -45,11 +45,15 @@ button {
   align-items: center;
   justify-content: center;
   padding: 12px;
+  color: var(--white);
 }
 
 input {
   background: var(--input-background);
   border-radius: 8px;
+  padding: 20px;
+  background: var(--input-background);
+  color: var(--text);
 }
 
 button,
@@ -62,10 +66,4 @@ input {
   font-weight: 500;
   font-size: 20px;
   line-height: 30px;
-  color: var(--white);
-}
-
-input{
-  padding: 20px;
-  background: var(--input-background);
 }
