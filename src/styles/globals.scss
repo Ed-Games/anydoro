@@ -22,7 +22,7 @@ body {
   --grey-blue: rgba(46, 56, 76, 0.87);
   --black: #000000;
   --white: #ffffff;
-  --dark-blue: #414aa3;
+  --dark-purple: #414aa3;
   --light-blue: #9da4ee;
   --background: #f2f3f5;
   --green: #41a391;
@@ -46,6 +46,7 @@ button {
   justify-content: center;
   padding: 12px;
   color: var(--white);
+  cursor: pointer;
 }
 
 input {
@@ -63,7 +64,31 @@ input {
   outline: none;
   border: 0;
   font-family: "Inter";
-  font-weight: 500;
   font-size: 20px;
   line-height: 30px;
+}
+
+h1{
+  font-size: 36px;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 30px;
+  width: 100vw;
+  height: 100vh;
+}
+
+.red-button{
+  background: var(--red);  
+  max-width: 420px;
+  width: 100%;
+  font-weight: 500;
+
+  &:hover{
+    background: var(--dark-red);
+  }
+
 }
