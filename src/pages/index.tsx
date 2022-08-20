@@ -25,7 +25,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Anydoro | Home</title>
       </Head>
-      <aside className={styles.presentation}>
+      <aside className="presentation">
         <Image src={logo} alt="anydoro-logo" />
         <h1>Bem-vindo</h1>
         <span>Aumente sua produtividade com trabalho em grupo</span>
@@ -34,6 +34,7 @@ const Home: NextPage = () => {
         <h1>Bem-vindo</h1>
         <button
           type="button"
+          title="Criar nova sala"
           className="red-button"
           onClick={handleCreateNewRoom}
         >
@@ -48,7 +49,7 @@ const Home: NextPage = () => {
                 name="code"
                 onChange={handleChange}
               />
-              <button type="submit">
+              <button type="submit" title="Entrar na sala" >
                 <FiArrowRight size={30} />
               </button>
             </form>
