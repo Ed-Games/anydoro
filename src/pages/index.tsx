@@ -28,6 +28,7 @@ const Home: NextPage = () => {
       </Head>
       <aside className={styles.presentation}>
         <Image src={logo} alt="anydoro-logo" />
+        <h1>Bem-vindo</h1>
         <span>Aumente sua produtividade com trabalho em grupo</span>
       </aside>
       <main className={styles.createRoom}>
