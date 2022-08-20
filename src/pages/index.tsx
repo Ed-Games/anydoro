@@ -2,11 +2,11 @@ import type { NextPage } from "next";
 import Image from "next/image";
 import styles from "./index.module.scss";
 import background from "../../assets/background.svg";
-import logo from "../../assets/logo.svg";
+import logo from "../../public/logo.svg";
 import Head from "next/head";
 import { FiArrowRight } from "react-icons/fi";
 import Router from "next/router";
-import { FormEvent, MouseEvent } from "react";
+import { MouseEvent } from "react";
 import { Formik } from "formik";
 
 const Home: NextPage = () => {
