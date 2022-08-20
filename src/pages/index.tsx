@@ -1,7 +1,6 @@
 import type { NextPage } from "next";
 import Image from "next/image";
 import styles from "./index.module.scss";
-import background from "../../assets/background.svg";
 import logo from "../../public/logo.svg";
 import Head from "next/head";
 import { FiArrowRight } from "react-icons/fi";
@@ -22,7 +21,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container limiter">
       <Head>
         <title>Anydoro | Home</title>
       </Head>
