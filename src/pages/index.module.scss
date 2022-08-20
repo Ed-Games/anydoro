@@ -26,16 +26,13 @@
     line-height: 57px;
   }
 
-  .backgroundImage {
-    position: absolute;
-    width: 100%;
-  }
 
   @media (max-width: 1049px) {
     align-items: center;
     flex: 0;
     margin-bottom: 30px;
     padding: 0;
+    background-image: none;
     span {
       text-align: center;
       max-width: 420px;
@@ -52,10 +49,12 @@
 .createRoom {
   display: flex;
   flex-direction: column;
+  justify-content: center;
   min-width: 50%;
   max-width: 100%;
   padding: 50px;
   padding-top: 0;
+  height: 100%;
 
   span {
     margin: 20px;
