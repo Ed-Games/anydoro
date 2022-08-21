@@ -1,0 +1,25 @@
+.header{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  justify-self: flex-start;
+  position: absolute;
+  top: 30px;
+  right: 30px;
+  width: 100%;
+  gap: 20px;
+
+  button{
+    &:first-of-type{
+      background: var(--purple);
+      &:hover{
+        background: var(--dark-purple);
+      }
+    }
+
+    background: var(--red);
+    &:hover{
+      background: var(--dark-red);
+    }
+  }
+}
