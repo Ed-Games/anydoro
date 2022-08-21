@@ -1,6 +1,7 @@
 import { NextPage } from "next";
 import Head from "next/head";
 import Header from "../../components/Header";
+import Pomodoro from "../../components/Pomodoro";
 
 const Room: NextPage = () => {
   return (
@@ -9,6 +10,7 @@ const Room: NextPage = () => {
         <title>Anydoro | Timer </title>
       </Head>
       <Header />
+      <Pomodoro />
     </div>
   );
 };
