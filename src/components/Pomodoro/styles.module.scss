@@ -1,0 +1,73 @@
+.pomodoro{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 400px;
+  gap: 30px;
+
+  .tabs{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+
+    button{
+      width: 115px;
+      height: 30px;
+      font-size: 16px;
+      background: var(--white);
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .active{
+      color: var(--purple);
+      border: 1px solid var(--purple);
+    }
+  }
+
+  .line{
+    width: 100%;
+    border: 1px solid var(--light-grey);
+  }
+
+  .timer{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white);
+    border-radius: 8px;
+    height: 200px;
+    width: 100%;
+
+    span{
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 150px;
+    }
+  }
+
+  .btnConfig{
+    background: var(--green);
+
+    &:hover{
+      background: var(--neon-green);
+    }
+  }
+
+  .btnStart{
+    background: var(--purple);
+
+    &:hover{
+      background: var(--dark-purple);
+    }
+  }
+
+  button{
+    width: 100%;
+    height: 80px;
+    font-weight: 600;
+  }
+}
