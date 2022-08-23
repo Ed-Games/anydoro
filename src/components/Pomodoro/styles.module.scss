@@ -65,6 +65,14 @@
     }
   }
 
+  .btnStop{
+    background: var(--red);
+
+    &:hover{
+      background: var(--dark-red);
+    }
+  }
+
   button{
     width: 100%;
     height: 80px;
