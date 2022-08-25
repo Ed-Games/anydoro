@@ -1,14 +1,17 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
+import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 
 interface ITimerContextProps {
   isActive: boolean;
   hasFinished: boolean;
   minutes: number;
   seconds: number;
+  mode: string;
   setTime: (number: number) => void;
   startTimer: () => void;
-  stopTimer: () => void;
   resetTimer: () => void;
+  startPomodoro: () => void;
+  startShortBreak: () => void;
+  startLongBreak: () => void;
 }
 
 interface ITimerContextProviderProps {
@@ -23,8 +26,10 @@ export const TimerContextProvider = ({
   children,
 }: ITimerContextProviderProps) => {
   const [time, setTime] = useState<number>(25 * 60);
-  const [isActive, setIsActive] = useState(false);
-  const [hasFinished, setHasFinished] = useState(false);
+  const [isActive, setIsActive] = useState<boolean>(false);
+  const [mode, setMode] = useState<string>("Pomodoro");
+  const [ciclesCount, setCiclesCount] = useState<number>(0);
+  const [hasFinished, setHasFinished] = useState<boolean>(false);
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -33,16 +38,36 @@ export const TimerContextProvider = ({
     setIsActive(true);
   };
 
-  const stopTimer = () => {
-    setIsActive(false);
-  };
-
   const resetTimer = () => {
-    clearTimeout(TimeOut)
+    clearTimeout(TimeOut);
     setIsActive(false);
     setHasFinished(true);
-    setTime(25*60);
+    setTime(25 * 60);
   };
+
+  const startPomodoro = () => {
+    setMode("Pomodoro");
+    setTime(25 * 60);
+  };
+
+  const startShortBreak = () => {
+    setMode("ShortBreak");
+    setTime(5 * 60);
+  };
+
+  const startLongBreak = () => {
+    setMode("LongBreak");
+    setTime(15 * 60);
+  };
+
+  const handleAfterTimerEnds = useCallback(() => {
+    if (mode == "Pomodoro") {
+      setCiclesCount(ciclesCount + 1);
+      ciclesCount < 4 ? startShortBreak() : startLongBreak();
+    } else {
+      startPomodoro();
+    }
+  }, [ciclesCount, mode]);
 
   useEffect(() => {
     if (isActive && time > 0) {
@@ -50,10 +75,9 @@ export const TimerContextProvider = ({
         setTime(time - 1);
       }, 1000);
     } else if (isActive && time == 0) {
-      setIsActive(false);
-      setHasFinished(true);
+      handleAfterTimerEnds()
     }
-  }, [time, isActive]);
+  }, [time, isActive, handleAfterTimerEnds]);
 
   return (
     <TimerContext.Provider
@@ -62,10 +86,13 @@ export const TimerContextProvider = ({
         isActive,
         minutes,
         seconds,
+        mode,
         resetTimer,
         setTime,
         startTimer,
-        stopTimer,
+        startPomodoro,
+        startShortBreak,
+        startLongBreak
       }}
     >
       {children}
