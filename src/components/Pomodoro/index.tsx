@@ -1,4 +1,5 @@
 import { NextPage } from "next";
+import { useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
 
@@ -7,11 +8,13 @@ const Pomodoro: NextPage = () => {
     minutes,
     seconds,
     startTimer,
-    stopTimer,
-    setTime,
     resetTimer,
+    setTime,
+    startLongBreak,
+    startPomodoro,
+    startShortBreak,
     isActive,
-    hasFinished,
+    mode,
   } = useTimer();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
@@ -24,9 +27,11 @@ const Pomodoro: NextPage = () => {
   return (
     <div className={styles.pomodoro}>
       <div className={styles.tabs}>
-        <button className={styles.active}>Pomodoro</button>
-        <button>Short Break</button>
-        <button>Long Break</button>
+        <button onClick={startPomodoro} className={ mode == 'Pomodoro'? styles.active : '' }>
+          Pomodoro
+        </button>
+        <button onClick={startShortBreak} className={ mode == 'ShortBreak'? styles.active : '' } >Short Break</button>
+        <button onClick={startLongBreak} className={ mode == 'LongBreak'? styles.active : '' } >Long Break</button>
       </div>
 
       <div className={styles.line}></div>
