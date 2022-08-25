@@ -1,4 +1,10 @@
-import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 
 interface ITimerContextProps {
   isActive: boolean;
@@ -38,12 +44,13 @@ export const TimerContextProvider = ({
     setIsActive(true);
   };
 
-  const resetTimer = () => {
+  const resetTimer = useCallback(() => {
     clearTimeout(TimeOut);
+    setCiclesCount(0);
     setIsActive(false);
     setHasFinished(true);
-    setTime(25 * 60);
-  };
+    startPomodoro();
+  }, []);
 
   const startPomodoro = () => {
     setMode("Pomodoro");
@@ -63,11 +70,14 @@ export const TimerContextProvider = ({
   const handleAfterTimerEnds = useCallback(() => {
     if (mode == "Pomodoro") {
       setCiclesCount(ciclesCount + 1);
-      ciclesCount < 4 ? startShortBreak() : startLongBreak();
-    } else {
+      ciclesCount < 3 ? startShortBreak() : startLongBreak();
+    } else if (mode === "ShortBreak") {
       startPomodoro();
+    } else {
+      resetTimer();
+      setIsActive(true);
     }
-  }, [ciclesCount, mode]);
+  }, [ciclesCount, mode, resetTimer]);
 
   useEffect(() => {
     if (isActive && time > 0) {
@@ -75,7 +85,7 @@ export const TimerContextProvider = ({
         setTime(time - 1);
       }, 1000);
     } else if (isActive && time == 0) {
-      handleAfterTimerEnds()
+      handleAfterTimerEnds();
     }
   }, [time, isActive, handleAfterTimerEnds]);
 
@@ -92,7 +102,7 @@ export const TimerContextProvider = ({
         startTimer,
         startPomodoro,
         startShortBreak,
-        startLongBreak
+        startLongBreak,
       }}
     >
       {children}
