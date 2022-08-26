@@ -1,0 +1,38 @@
+.overlay{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.67);
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  z-index: 5;
+
+  .modalContainer{
+    display: flex;
+    flex-direction: column;
+    padding-left: 50px;
+    padding-top: 25px;
+    padding-bottom: 25px;
+    border-radius: 8px;
+    background: var(--white);
+    width: 550px;
+    position: relative;
+
+    .closeButton{
+      cursor: pointer;
+      position: absolute;
+      right: 25px;
+      top: 25px
+    }
+
+    .children{
+      margin-top: 20px;
+    }
+  }
+}
+
+.hidden{
+  display: none;
+}
