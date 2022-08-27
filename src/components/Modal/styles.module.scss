@@ -13,10 +13,12 @@
     display: flex;
     flex-direction: column;
     padding-left: 50px;
+    padding-right: 50px;
     padding-top: 25px;
     padding-bottom: 25px;
     border-radius: 8px;
     background: var(--white);
+    max-width: 100%;
     width: 550px;
     position: relative;
 
