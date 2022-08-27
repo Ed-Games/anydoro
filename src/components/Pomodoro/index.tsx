@@ -2,20 +2,13 @@ import { NextPage } from "next";
 import { useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
+import { TimerOptions } from "./TimerOptions";
 
 const Pomodoro: NextPage = () => {
-  const {
-    minutes,
-    seconds,
-    startTimer,
-    resetTimer,
-    setTime,
-    startLongBreak,
-    startPomodoro,
-    startShortBreak,
-    isActive,
-    mode,
-  } = useTimer();
+  const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
+
+  const { minutes, seconds, startTimer, resetTimer, isActive, mode } =
+    useTimer();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
@@ -27,11 +20,15 @@ const Pomodoro: NextPage = () => {
   return (
     <div className={styles.pomodoro}>
       <div className={styles.tabs}>
-        <button onClick={startPomodoro} className={ mode == 'Pomodoro'? styles.active : '' }>
+        <button className={mode == "Pomodoro" ? styles.active : ""}>
           Pomodoro
         </button>
-        <button onClick={startShortBreak} className={ mode == 'ShortBreak'? styles.active : '' } >Short Break</button>
-        <button onClick={startLongBreak} className={ mode == 'LongBreak'? styles.active : '' } >Long Break</button>
+        <button className={mode == "ShortBreak" ? styles.active : ""}>
+          Short Break
+        </button>
+        <button className={mode == "LongBreak" ? styles.active : ""}>
+          Long Break
+        </button>
       </div>
 
       <div className={styles.line}></div>
@@ -45,7 +42,12 @@ const Pomodoro: NextPage = () => {
       </div>
 
       {!isActive && (
-        <button className={styles.btnConfig}>Configurar ciclo</button>
+        <button
+          onClick={() => setOpenConfigModal(true)}
+          className={styles.btnConfig}
+        >
+          Configurar ciclo
+        </button>
       )}
       <button
         onClick={toggleTimer}
@@ -53,6 +55,7 @@ const Pomodoro: NextPage = () => {
       >
         {isActive ? "Cancelar ciclo" : "Iniciar ciclo"}
       </button>
+      <TimerOptions isVisible={openConfigModal} setIsVisible={setOpenConfigModal} />
     </div>
   );
 };
