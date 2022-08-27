@@ -107,6 +107,20 @@ h1 {
   }
 }
 
+.row-wrapper{
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+}
+
+.column-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  justify-content: center;
+}
+
 .presentation {
   display: flex;
   flex-direction: column;
