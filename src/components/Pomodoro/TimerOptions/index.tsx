@@ -12,23 +12,29 @@ export const TimerOptions = ({
 }: ITImerOptionsProps) => {
   return (
     <Modal isVisible={isVisible} setIsModalVisible={setIsVisible}>
-      <div className={styles.content}>
+      <form className={styles.content}>
         <h3>Configurar Timer</h3>
-        <div className="row-wrapper">
+        <div className={`row-wrapper ${styles.InputContainer}`}>
           <div className="column-wrapper">
             <span>Pomodoro</span>
-            <input type="number" />
+            <input type="time" />
           </div>
           <div className="column-wrapper">
             <span>Short Break</span>
-            <input type="number" />
+            <input type="time" />
           </div>
           <div className="column-wrapper">
             <span>Long Break</span>
-            <input type="number" />
+            <input type="time" />
           </div>
         </div>
-      </div>
+
+        <div className={`row-wrapper ${styles.btnContainer}`}>
+          <button>Cancelar</button>
+          <button>Salvar</button>
+        </div>
+
+      </form>
     </Modal>
   );
 };
