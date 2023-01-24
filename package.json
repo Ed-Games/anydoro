@@ -14,6 +14,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
+    "react-text-mask": "^5.5.0",
     "sass": "^1.57.1",
     "yup": "^0.32.11"
   },
@@ -21,6 +22,7 @@
     "@types/node": "18.7.3",
     "@types/react": "18.0.26",
     "@types/react-dom": "18.0.10",
+    "@types/react-text-mask": "^5.4.11",
     "eslint": "8.31.0",
     "eslint-config-next": "12.2.5",
     "typescript": "4.9.4"
