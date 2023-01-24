@@ -13,7 +13,7 @@ const Pomodoro: NextPage = () => {
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
 
-  function toggleTimer() {
+  const toggleTimer = () => {
     isActive ? resetTimer() : startTimer();
   }
 
