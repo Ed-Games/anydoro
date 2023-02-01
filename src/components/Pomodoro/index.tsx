@@ -22,7 +22,7 @@ const Pomodoro: NextPage = () => {
 
   useEffect(()=> {
     if(mode===Mode.LONGBREAK){
-      toast.success('Parabens! Você acaba de completar um ciclo. Que tal uma pausa maior pro cafezinho?');
+      toast.success('Parabens! Você completou um ciclo. Que tal uma pausa para o café?', { pauseOnFocusLoss: false } );
     }
   }, [mode])
 
@@ -64,7 +64,7 @@ const Pomodoro: NextPage = () => {
         onClick={toggleTimer}
         className={!isActive ? styles.btnStart : styles.btnStop}
       >
-        {isActive ? "Cancelar ciclo" : "Iniciar ciclo"}
+        {isActive ? "Cancelar" : "Iniciar ciclo"}
       </button>
       <TimerOptions
         isVisible={openConfigModal}
