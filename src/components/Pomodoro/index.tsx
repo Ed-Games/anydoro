@@ -10,8 +10,15 @@ import { toast } from "react-toastify";
 const Pomodoro: NextPage = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
 
-  const { minutes, seconds, startTimer, resetTimer, isActive, mode, cyclesCount } =
-    useTimer();
+  const {
+    minutes,
+    seconds,
+    startTimer,
+    resetTimer,
+    isActive,
+    mode,
+    cyclesCount,
+  } = useTimer();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
@@ -20,11 +27,14 @@ const Pomodoro: NextPage = () => {
     isActive ? resetTimer() : startTimer();
   };
 
-  useEffect(()=> {
-    if(mode===Mode.LONGBREAK){
-      toast.success('Parabens! Você completou um ciclo. Que tal uma pausa para o café?', { pauseOnFocusLoss: false } );
+  useEffect(() => {
+    if (mode === Mode.LONGBREAK) {
+      toast.success(
+        "Parabens! Você completou um ciclo. Que tal uma pausa para o café?",
+        { pauseOnFocusLoss: false }
+      );
     }
-  }, [mode])
+  }, [mode]);
 
   return (
     <div className={styles.pomodoro}>
@@ -57,9 +67,9 @@ const Pomodoro: NextPage = () => {
         >
           Configurar ciclo
         </button>
-      ): (
-        <Progressbar value={ cyclesCount / 4 * 100 } />
-      ) }
+      ) : (
+        <Progressbar value={(cyclesCount / 4) * 100} />
+      )}
       <button
         onClick={toggleTimer}
         className={!isActive ? styles.btnStart : styles.btnStop}
