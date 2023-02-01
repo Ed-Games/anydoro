@@ -1,9 +1,11 @@
 import { NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
 import { TimerOptions } from "../TimerOptions";
 import { Progressbar } from "../ProgressBar";
+import { Mode } from "../../enums";
+import { toast } from "react-toastify";
 
 const Pomodoro: NextPage = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
@@ -18,16 +20,22 @@ const Pomodoro: NextPage = () => {
     isActive ? resetTimer() : startTimer();
   };
 
+  useEffect(()=> {
+    if(mode===Mode.LONGBREAK){
+      toast.success('Parabens! Você acaba de completar um ciclo. Que tal uma pausa maior pro cafezinho?');
+    }
+  }, [mode])
+
   return (
     <div className={styles.pomodoro}>
       <div className={styles.tabs}>
-        <button className={mode == "Pomodoro" ? styles.active : ""}>
+        <button className={mode == Mode.POMODORO ? styles.active : ""}>
           Pomodoro
         </button>
-        <button className={mode == "ShortBreak" ? styles.active : ""}>
+        <button className={mode == Mode.SHORTBREAK ? styles.active : ""}>
           Short Break
         </button>
-        <button className={mode == "LongBreak" ? styles.active : ""}>
+        <button className={mode == Mode.LONGBREAK ? styles.active : ""}>
           Long Break
         </button>
       </div>
