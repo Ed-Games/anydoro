@@ -5,7 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
-import { Mode } from "../enums";
+import { Mode, Time } from "../enums";
 
 interface ITimerContextProps {
   isActive: boolean;
@@ -33,7 +33,7 @@ export const TimerContext = createContext({} as ITimerContextProps);
 export const TimerContextProvider = ({
   children,
 }: ITimerContextProviderProps) => {
-  const [time, setTime] = useState<number>(25 * 60);
+  const [time, setTime] = useState<number>(Time.POMODORO);
   const [isActive, setIsActive] = useState<boolean>(false);
   const [mode, setMode] = useState<string>(Mode.POMODORO);
   const [cyclesCount, setCyclesCount] = useState<number>(0);
@@ -56,17 +56,17 @@ export const TimerContextProvider = ({
 
   const startPomodoro = () => {
     setMode(Mode.POMODORO);
-    setTime(25 * 60);
+    setTime(Time.POMODORO);
   };
 
   const startShortBreak = () => {
     setMode(Mode.SHORTBREAK);
-    setTime(5 * 60);
+    setTime(Time.SHORTBREAK);
   };
 
   const startLongBreak = () => {
     setMode(Mode.LONGBREAK);
-    setTime(15 * 60);
+    setTime(Time.LONGBREAK);
   };
 
   const handleAfterTimerEnds = useCallback(() => {
