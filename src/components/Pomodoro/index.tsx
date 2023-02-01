@@ -3,11 +3,12 @@ import { useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
 import { TimerOptions } from "../TimerOptions";
+import { Progressbar } from "../ProgressBar";
 
 const Pomodoro: NextPage = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
 
-  const { minutes, seconds, startTimer, resetTimer, isActive, mode } =
+  const { minutes, seconds, startTimer, resetTimer, isActive, mode, cyclesCount } =
     useTimer();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
@@ -41,14 +42,16 @@ const Pomodoro: NextPage = () => {
         </span>
       </div>
 
-      {!isActive && (
+      {!isActive ? (
         <button
           onClick={() => setOpenConfigModal(true)}
           className={styles.btnConfig}
         >
           Configurar ciclo
         </button>
-      )}
+      ): (
+        <Progressbar value={ cyclesCount / 4 * 100 } />
+      ) }
       <button
         onClick={toggleTimer}
         className={!isActive ? styles.btnStart : styles.btnStop}
