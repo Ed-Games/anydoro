@@ -5,6 +5,7 @@ import {
   useEffect,
   useState,
 } from "react";
+import { Mode } from "../enums";
 
 interface ITimerContextProps {
   isActive: boolean;
@@ -34,7 +35,7 @@ export const TimerContextProvider = ({
 }: ITimerContextProviderProps) => {
   const [time, setTime] = useState<number>(25 * 60);
   const [isActive, setIsActive] = useState<boolean>(false);
-  const [mode, setMode] = useState<string>("Pomodoro");
+  const [mode, setMode] = useState<string>(Mode.POMODORO);
   const [cyclesCount, setCyclesCount] = useState<number>(0);
   const [hasFinished, setHasFinished] = useState<boolean>(false);
 
@@ -54,25 +55,25 @@ export const TimerContextProvider = ({
   }, []);
 
   const startPomodoro = () => {
-    setMode("Pomodoro");
+    setMode(Mode.POMODORO);
     setTime(25 * 60);
   };
 
   const startShortBreak = () => {
-    setMode("ShortBreak");
+    setMode(Mode.SHORTBREAK);
     setTime(5 * 60);
   };
 
   const startLongBreak = () => {
-    setMode("LongBreak");
+    setMode(Mode.LONGBREAK);
     setTime(15 * 60);
   };
 
   const handleAfterTimerEnds = useCallback(() => {
-    if (mode == "Pomodoro") {
+    if (mode == Mode.POMODORO) {
       setCyclesCount(cyclesCount + 1);
       cyclesCount < 3 ? startShortBreak() : startLongBreak();
-    } else if (mode === "ShortBreak") {
+    } else if (mode === Mode.SHORTBREAK) {
       startPomodoro();
     } else {
       resetTimer();
