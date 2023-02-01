@@ -2,7 +2,7 @@ import { NextPage } from "next";
 import { useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
-import { TimerOptions } from "./TimerOptions";
+import { TimerOptions } from "../TimerOptions";
 
 const Pomodoro: NextPage = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
@@ -15,7 +15,7 @@ const Pomodoro: NextPage = () => {
 
   const toggleTimer = () => {
     isActive ? resetTimer() : startTimer();
-  }
+  };
 
   return (
     <div className={styles.pomodoro}>
@@ -55,7 +55,10 @@ const Pomodoro: NextPage = () => {
       >
         {isActive ? "Cancelar ciclo" : "Iniciar ciclo"}
       </button>
-      <TimerOptions isVisible={openConfigModal} setIsVisible={setOpenConfigModal} />
+      <TimerOptions
+        isVisible={openConfigModal}
+        setIsVisible={setOpenConfigModal}
+      />
     </div>
   );
 };

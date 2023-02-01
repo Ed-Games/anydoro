@@ -1,8 +1,8 @@
 import { Formik } from "formik";
-import { Modal } from "../../Modal";
+import { Modal } from "../Modal";
 import styles from "./styles.module.scss";
-import { timerOptionsSchema } from "../../../validators/timerOptionsSchema";
-import { TimeInput } from "../../TimeInput";
+import { timerOptionsSchema } from "../../validators/timerOptionsSchema";
+import { TimeInput } from "../TimeInput";
 
 interface ITimerOptionsProps {
   isVisible: boolean;
