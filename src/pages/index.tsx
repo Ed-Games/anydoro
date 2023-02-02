@@ -14,7 +14,7 @@ const Home: NextPage = () => {
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.preventDefault();
-    Router.push(`/rooms/${Math.random()}`);
+    Router.push("/rooms/new");
   };
 
   const handleJoinRoom = (code: string) => {
@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Anydoro | Home</title>
       </Head>
-     <Presentation />
+      <Presentation />
 
       <main className={styles.createRoom}>
         <div className={styles.logo}>
