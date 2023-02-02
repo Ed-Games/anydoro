@@ -3,10 +3,10 @@ import Image from "next/image";
 import styles from "./index.module.scss";
 import logo from "../../public/logo.svg";
 import Head from "next/head";
-import { FiArrowRight } from "react-icons/fi";
 import Router from "next/router";
 import { MouseEvent } from "react";
 import { Formik } from "formik";
+import { FaGoogle } from "react-icons/fa";
 
 const Home: NextPage = () => {
   const handleCreateNewRoom = (
@@ -21,36 +21,48 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className="container limiter">
+    <div className={styles.container}>
       <Head>
         <title>Anydoro | Home</title>
       </Head>
-      <aside className="presentation">
-        <Image src={logo} alt="anydoro-logo" />
-        <h1>Bem-vindo</h1>
+      <aside className={styles.presentation}>
+        <h1>Crie salas de colaboração em tempo real</h1>
         <span>Aumente sua produtividade com trabalho em grupo</span>
       </aside>
+
       <main className={styles.createRoom}>
-        <h1>Bem-vindo</h1>
+        <div className={styles.logo}>
+          <Image src={logo} alt="anydoro-logo" />
+        </div>
+
         <button
           type="button"
           title="Criar nova sala"
-          className="red-button"
+          className={styles.googleButton}
           onClick={handleCreateNewRoom}
         >
-          criar nova sala
+          <FaGoogle size={24} />
+          crie sua sala com o Google
         </button>
-        <span>Ou entre em uma sala já existente</span>
-        <Formik initialValues={{code:''}} onSubmit={(values) => handleJoinRoom(values.code)}>
+
+        <div className={styles.divider}>
+          <div className={styles.line} />
+          <span>Ou entre em uma sala</span>
+          <div className={styles.line} />
+        </div>
+        <Formik
+          initialValues={{ code: "" }}
+          onSubmit={(values) => handleJoinRoom(values.code)}
+        >
           {({ handleChange, handleSubmit, errors, touched }) => (
-            <form onSubmit={handleSubmit} >
+            <form onSubmit={handleSubmit}>
               <input
                 placeholder="Digitar código da sala..."
                 name="code"
                 onChange={handleChange}
               />
-              <button type="submit" title="Entrar na sala" >
-                <FiArrowRight size={30} />
+              <button type="submit" title="Entrar na sala">
+                Entrar na sala
               </button>
             </form>
           )}
