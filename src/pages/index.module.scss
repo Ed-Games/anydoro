@@ -1,40 +1,74 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  width: 100vw;
+  height: 100vh;
+}
+
 .createRoom {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-width: 50%;
-  max-width: 100%;
-  padding: 50px;
-  padding-top: 0;
-  height: 100%;
+  gap: 30px;
+  width: 50%;
+  flex: 1;
 
-  span {
-    margin: 20px;
-    width: 100%;
-    max-width: 420px;
-    text-align: center;
+  .logo {
+    width: 160px;
+    margin-bottom: 20px;
+  }
+
+  .googleButton {
+    display: flex;
+    gap: 10px;
+    background-color: var(--dark-red);
+    width: 320px;
+    max-width: 100%;
+    height: 50px;
+    font-weight: 500;
+    font-size: 15px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+    width: 320px;
+    max-width: 100%;
+    font-size: 14px;
+    color: var(--grey);
+
+    .line {
+      border: 1px solid var(--light-grey);
+      width: 75px;
+      height: 1px;
+    }
   }
 
   > form {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
+    gap: 20px;
     max-width: 100%;
 
     input {
-      background: var(--white);
-      border-top-right-radius: 0;
-      border-bottom-right-radius: 0;
-      max-width: 340px;
-      width: 76%;
+      background: var(--background);
+      border: 1px solid var(--grey);
+      width: 320px;
+      max-width: 100%;
+      height: 50px;
+      font-size: 15px;
     }
 
     button {
-      width: 80px;
-      max-width: 24%;
-      border-top-left-radius: 0;
-      border-bottom-left-radius: 0;
+      width: 320px;
+      max-width: 100%;
       background: var(--purple);
+      font-size: 15px;
 
       &:hover {
         background: var(--dark-purple);
@@ -42,13 +76,36 @@
     }
   }
 
-  @media (max-width: 1049px) {
-    gap: 30px;
-    padding: 0;
-    align-items: center;
-    justify-content: flex-start;
-    h1 {
-      display: none;
-    }
+  @media (max-width: 1240px) {
+    width: 100%;
+    padding: 10px;
+  }
+}
+
+.presentation {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 50%;
+  flex: 1;
+  gap: 30px;
+  padding: 50px;
+  padding-bottom: 0;
+  height: 100%;
+
+  background: url("../../public/background.svg") no-repeat 90%;
+  background-size: 90%;
+  background-color: var(--purple);
+  color: var(--white);
+
+  span {
+    font-family: "Rajdhani";
+    font-weight: 500;
+    font-size: 25px;
+    line-height: 57px;
+  }
+
+  @media (max-width: 1240px) {
+    display: none;
   }
 }
