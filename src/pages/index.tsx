@@ -7,6 +7,7 @@ import Router from "next/router";
 import { MouseEvent } from "react";
 import { Formik } from "formik";
 import { FaGoogle } from "react-icons/fa";
+import { Presentation } from "../components/presentation";
 
 const Home: NextPage = () => {
   const handleCreateNewRoom = (
@@ -25,10 +26,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Anydoro | Home</title>
       </Head>
-      <aside className={styles.presentation}>
-        <h1>Crie salas de colaboração em tempo real</h1>
-        <span>Aumente sua produtividade com trabalho em grupo</span>
-      </aside>
+     <Presentation />
 
       <main className={styles.createRoom}>
         <div className={styles.logo}>
