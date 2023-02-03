@@ -1,0 +1,65 @@
+import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
+import { createContext, ReactNode, useEffect, useState } from "react";
+import { auth } from "../services/firebase";
+
+interface IUser {
+  id: string;
+  name: string;
+  avatar: string;
+}
+
+interface IAuthContext {
+  user: IUser | undefined;
+  signInWithGoogle: () => Promise<void>;
+}
+
+interface IAuthContextProviderProps {
+  children: ReactNode;
+}
+
+export const AuthContext = createContext({} as IAuthContext);
+
+export const AuthContextProvider = ({
+  children,
+}: IAuthContextProviderProps) => {
+  const [user, setUser] = useState<IUser>();
+
+  const signInWithGoogle = async () => {
+    const provider = new GoogleAuthProvider();
+    const result = await signInWithPopup(auth, provider);
+
+    handleValidateAndSetUser(result.user);
+  };
+
+  const handleValidateAndSetUser = (user: User | null) => {
+    if (user) {
+      const { displayName, photoURL, uid } = user;
+
+      if (!displayName || !photoURL) {
+        throw new Error("Missing information from Google Account");
+      }
+
+      setUser({
+        id: uid,
+        name: displayName,
+        avatar: photoURL,
+      });
+    }
+  };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      handleValidateAndSetUser(user);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
+
+  return (
+    <AuthContext.Provider value={{ user, signInWithGoogle }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
