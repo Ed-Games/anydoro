@@ -8,13 +8,21 @@ import { MouseEvent } from "react";
 import { Formik } from "formik";
 import { FaGoogle } from "react-icons/fa";
 import { Presentation } from "../components/presentation";
+import { useAuth } from "../hooks/useAuth";
 
 const Home: NextPage = () => {
-  const handleCreateNewRoom = (
+  const { signInWithGoogle, user } = useAuth();
+
+  const handleCreateNewRoom = async (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.preventDefault();
-    Router.push("/rooms/new");
+    try {
+      if (!user) await signInWithGoogle();
+      Router.push("/rooms/new");
+    } catch (error) {
+      return;
+    }
   };
 
   const handleJoinRoom = (code: string) => {
