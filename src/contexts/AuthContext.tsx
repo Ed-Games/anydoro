@@ -1,12 +1,7 @@
 import { GoogleAuthProvider, signInWithPopup, User } from "firebase/auth";
 import { createContext, ReactNode, useEffect, useState } from "react";
+import { IUser } from "../interfaces/User";
 import { auth } from "../services/firebase";
-
-interface IUser {
-  id: string;
-  name: string;
-  avatar: string;
-}
 
 interface IAuthContext {
   user: IUser | undefined;
