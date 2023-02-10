@@ -4,12 +4,12 @@ import Header from "../../components/Header";
 import Pomodoro from "../../components/Pomodoro";
 import { TimerContextProvider } from "../../contexts/timerContext";
 import "react-toastify/dist/ReactToastify.css";
-import { memo, useEffect } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../hooks/useAuth";
 import { useRoom } from "../../hooks/useRoom";
 
-const RoomComponent: NextPage = () => {
+const Room: NextPage = () => {
   const { user } = useAuth();
   const router = useRouter();
   const { handleLoadRoomAndAddUser } = useRoom();
@@ -36,7 +36,5 @@ const RoomComponent: NextPage = () => {
     </TimerContextProvider>
   );
 };
-
-const Room = memo(RoomComponent);
 
 export default Room;
