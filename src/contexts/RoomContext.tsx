@@ -21,10 +21,10 @@ export const RoomContext = createContext({} as IRoomContextProvider);
 export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const [room, setRoom] = useState<IRoom>();
   const router = useRouter();
-  const roomRef = ref(database, `rooms/${router.query.slug}`);
 
   const handleLoadRoomAndAddUser = useCallback(
     (user: IUser) => {
+      const roomRef = ref(database, `rooms/${router.query.slug}`);
       onValue(roomRef, async (snapshot) => {
         const localRoom: IRoom = snapshot.val();
         if (localRoom) {
@@ -56,10 +56,11 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         setRoom(localRoom);
       });
     },
-    [roomRef, router]
+    [router]
   );
 
   const handleCloseRoom = async () => {
+    const roomRef = ref(database, `rooms/${router.query.slug}`);
     await set(roomRef, { ...room, endedAt: new Date() });
     router.push("/");
   };
