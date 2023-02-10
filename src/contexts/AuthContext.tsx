@@ -4,7 +4,7 @@ import { IUser } from "../interfaces/User";
 import { auth } from "../services/firebase";
 
 interface IAuthContext {
-  user: IUser | undefined;
+  user?: IUser | null;
   signInWithGoogle: () => Promise<void>;
 }
 
@@ -17,7 +17,7 @@ export const AuthContext = createContext({} as IAuthContext);
 export const AuthContextProvider = ({
   children,
 }: IAuthContextProviderProps) => {
-  const [user, setUser] = useState<IUser>();
+  const [user, setUser] = useState<IUser | null | undefined>();
 
   const signInWithGoogle = async () => {
     const provider = new GoogleAuthProvider();
@@ -39,6 +39,8 @@ export const AuthContextProvider = ({
         name: displayName,
         avatar: photoURL,
       });
+    } else {
+      setUser(null);
     }
   };
 
