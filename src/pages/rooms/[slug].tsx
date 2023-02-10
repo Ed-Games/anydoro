@@ -15,6 +15,8 @@ const RoomComponent: NextPage = () => {
   const { handleLoadRoomAndAddUser } = useRoom();
 
   useEffect(() => {
+    if (user === undefined) return;
+
     if (!user) {
       router.push("/");
       return;
