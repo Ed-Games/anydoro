@@ -19,7 +19,7 @@ const NewRoom: NextPage = () => {
   const handleCreateRoom = async (name: string) => {
     try {
       const roomRef = ref(database, "rooms/" + uuidv4());
-      await set(roomRef, { name, adminId: user!.id, createdAt: new Date() });
+      await set(roomRef, { name, adminId: user!.id, createdAt: Date.now() });
       Router.push(`/rooms/${roomRef.key}`);
     } catch (error) {
       toast.error("Houve um erro ao tentar criar a sala.");
