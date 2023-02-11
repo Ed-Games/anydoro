@@ -26,7 +26,7 @@ const Room: NextPage = () => {
 
   return (
     <TimerContextProvider>
-      <div className="container">
+      <div id="room" className="container">
         <Head>
           <title>Anydoro | Timer </title>
         </Head>
