@@ -1,0 +1,16 @@
+.navigatorContainer{
+  display: none;
+
+  @media(max-width: 1024px){
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 55px;
+    border-radius: 5px;
+    background-color: var(--white);
+  }
+}
