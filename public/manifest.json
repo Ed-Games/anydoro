@@ -1,0 +1,18 @@
+{
+  "short_name": "Anydoro",
+  "name": "Anydoro - the pomodoro app made for teams",
+  "description": " create real time rooms for you and your team to manage tasks assignment working under the same synced pomodoro timer ",
+  "theme_color": "#F2F3F5",
+  "background_color": "#F2F3F5",
+  "display": "standalone",
+  "lang": "pt-BR",
+  "scope": "/",
+  "start_url": "/",
+  "icons": [
+    {
+      "src": "/icons/icon.png",
+      "sizes": "1024x1024",
+      "type": "image/png"
+    }
+  ]
+}
