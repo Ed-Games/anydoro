@@ -61,7 +61,8 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
 
   const handleCloseRoom = async () => {
     const roomRef = ref(database, `rooms/${router.query.slug}`);
-    await set(roomRef, { ...room, endedAt: new Date() });
+    await set(roomRef, { ...room, endedAt: Date.now() });
+    setRoom(undefined);
     router.push("/");
   };
 
