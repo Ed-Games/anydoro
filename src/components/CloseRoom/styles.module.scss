@@ -1,0 +1,19 @@
+.btnContainer{
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  width: 100%;
+
+  button{
+    &:first-of-type{
+      background-color: var(--red);
+    }
+
+    &:last-of-type{
+      background-color: var(--green);
+    }
+  }
+
+}
