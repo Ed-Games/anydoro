@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../hooks/useAuth";
 import { useRoom } from "../../hooks/useRoom";
+import { BottomTabNavigator } from "../../components/BottomTabNavigator";
 
 const Room: NextPage = () => {
   const { user } = useAuth();
@@ -32,6 +33,7 @@ const Room: NextPage = () => {
         </Head>
         <Header />
         <Pomodoro />
+        <BottomTabNavigator />
       </div>
     </TimerContextProvider>
   );
