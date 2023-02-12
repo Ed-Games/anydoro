@@ -14,6 +14,7 @@ interface ITimerContextProps {
   seconds: number;
   mode: string;
   cyclesCount: number;
+  time: number;
   setTime: (number: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
@@ -100,6 +101,7 @@ export const TimerContextProvider = ({
         seconds,
         mode,
         cyclesCount,
+        time,
         resetTimer,
         setTime,
         startTimer,
