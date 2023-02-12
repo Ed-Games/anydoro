@@ -6,25 +6,12 @@ import Image from "next/image";
 import { Formik } from "formik";
 import Link from "next/link";
 import { CreateRoomSchema } from "../../../validators/createRoomSchema";
-import { database } from "../../../services/firebase";
-import { ref, set } from "firebase/database";
-import { uuidv4 } from "@firebase/util";
 import { useAuth } from "../../../hooks/useAuth";
-import Router from "next/router";
-import { toast } from "react-toastify";
+import { useRoom } from "../../../hooks/useRoom";
 
 const NewRoom: NextPage = () => {
   const { user } = useAuth();
-
-  const handleCreateRoom = async (name: string) => {
-    try {
-      const roomRef = ref(database, "rooms/" + uuidv4());
-      await set(roomRef, { name, adminId: user!.id, createdAt: Date.now() });
-      Router.push(`/rooms/${roomRef.key}`);
-    } catch (error) {
-      toast.error("Houve um erro ao tentar criar a sala.");
-    }
-  };
+  const { handleCreateRoom } = useRoom();
 
   return (
     <div className={styles.container}>
@@ -37,7 +24,7 @@ const NewRoom: NextPage = () => {
         <Formik
           initialValues={{ name: "" }}
           validationSchema={CreateRoomSchema}
-          onSubmit={(values) => handleCreateRoom(values.name)}
+          onSubmit={(values) => handleCreateRoom(values.name, user!)}
         >
           {({ handleChange, handleSubmit, errors }) => (
             <form onSubmit={handleSubmit}>

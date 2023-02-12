@@ -5,6 +5,7 @@ import { toast } from "react-toastify";
 import { IRoom } from "../interfaces/Room";
 import { IUser } from "../interfaces/User";
 import { database } from "../services/firebase";
+import { uuidv4 } from "@firebase/util";
 
 interface IRoomContextProps {
   children: ReactNode;
@@ -12,6 +13,7 @@ interface IRoomContextProps {
 
 interface IRoomContextProvider {
   room: IRoom | undefined;
+  handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
 }
@@ -21,6 +23,16 @@ export const RoomContext = createContext({} as IRoomContextProvider);
 export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const [room, setRoom] = useState<IRoom>();
   const router = useRouter();
+
+  const handleCreateRoom = async (name: string, user: IUser) => {
+    try {
+      const roomRef = ref(database, "rooms/" + uuidv4());
+      await set(roomRef, { name, adminId: user.id, createdAt: Date.now() });
+      router.push(`/rooms/${roomRef.key}`);
+    } catch (error) {
+      toast.error("Houve um erro ao tentar criar a sala.");
+    }
+  };
 
   const handleLoadRoomAndAddUser = useCallback(
     (user: IUser) => {
@@ -70,6 +82,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     <RoomContext.Provider
       value={{
         room,
+        handleCreateRoom,
         handleLoadRoomAndAddUser,
         handleCloseRoom,
       }}
