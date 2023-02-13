@@ -4,6 +4,8 @@ export interface IRoom {
   adminId: string;
   name: string;
   users: IUser[];
-  createdAt: Date;
-  endedAt: Date;
+  createdAt: string;
+  endedAt?: string;
+  currentTimerMode?: string;
+  currentTimerValue?: number;
 }
