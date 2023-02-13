@@ -16,7 +16,7 @@ interface IRoomContextProvider {
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
-  handleSetRoomTimer: (time:number) => Promise<void>;
+  handleSetRoomTimer: (time: number, mode: string) => Promise<void>;
 }
 
 export const RoomContext = createContext({} as IRoomContextProvider);
@@ -79,10 +79,13 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     router.push("/");
   };
 
-  const handleSetRoomTimer = useCallback(async (time: number) => {
-    const roomRef = ref(database, `rooms/${router.query.slug}`);
-    await set(roomRef, { ...room, currentTimerValue: time });
-  }, [room, router]);
+  const handleSetRoomTimer = useCallback(
+    async (time: number, mode: string) => {
+      const roomRef = ref(database, `rooms/${router.query.slug}`);
+      await set(roomRef, { ...room, currentTimerValue: time, currentTimerMode: mode });
+    },
+    [room, router]
+  );
 
   return (
     <RoomContext.Provider
