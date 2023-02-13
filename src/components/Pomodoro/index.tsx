@@ -45,9 +45,9 @@ const Pomodoro: NextPage = () => {
 
   useEffect( () => {
     if(user?.id === room?.adminId){
-      handleSetRoomTimer(time);
+      handleSetRoomTimer(time, mode);
     }
-  }, [handleSetRoomTimer, room, time, user])
+  }, [handleSetRoomTimer, mode, room, time, user])
 
   return (
     <div className={styles.pomodoro}>
