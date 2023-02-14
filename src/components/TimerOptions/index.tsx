@@ -3,22 +3,48 @@ import { Modal } from "../Modal";
 import styles from "./styles.module.scss";
 import { timerOptionsSchema } from "../../validators/timerOptionsSchema";
 import { TimeInput } from "../TimeInput";
+import { textToSenconds } from "../../utils/textToSeconds";
 
 interface ITimerOptionsProps {
   isVisible: boolean;
   setIsVisible: (arg: boolean) => void;
 }
 
+interface ITimerOptions {
+  pomodoro: string;
+  shortBreak: string;
+  longBreak: string;
+}
+
 export const TimerOptions = ({
   isVisible,
   setIsVisible,
 }: ITimerOptionsProps) => {
+  const handleSavePomodoroOptions = (options: ITimerOptions) => {
+    const pomodoro = textToSenconds(options.pomodoro);
+    const shortBreak = textToSenconds(options.shortBreak);
+    const longBreak = textToSenconds(options.longBreak);
+
+    const timerOptions = {
+      pomodoro,
+      shortBreak,
+      longBreak,
+    };
+
+    localStorage.setItem("timerOptions", JSON.stringify(timerOptions));
+
+    setIsVisible(false);
+  };
   return (
     <Modal isVisible={isVisible} setIsModalVisible={setIsVisible}>
       <Formik
-        initialValues={{ pomodoro: "", shortBreak: "", longBreak: "" }}
+        initialValues={{
+          pomodoro: "",
+          shortBreak: "",
+          longBreak: "",
+        }}
         validationSchema={timerOptionsSchema}
-        onSubmit={(values) => console.log(values)}
+        onSubmit={(values) => handleSavePomodoroOptions(values)}
       >
         {({ handleChange, handleSubmit, values, errors, touched }) => (
           <form onSubmit={handleSubmit} className={styles.content}>
