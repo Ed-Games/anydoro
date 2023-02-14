@@ -56,14 +56,14 @@ export const TimerContextProvider = ({
     setCyclesCount(0);
     setIsActive(false);
     setHasFinished(true);
-    setTime(timerOptions?.pomodoro || Time.POMODORO)
+    setTime(timerOptions?.pomodoro || Time.POMODORO);
     setMode(Mode.POMODORO);
   }, [timerOptions]);
 
   const setPomodoroTimeAndMode = useCallback(
     (count: number) => {
       if (mode === Mode.POMODORO) {
-        console.log('pomodoro completed')
+        console.log("pomodoro completed");
         if (count < 3) {
           setMode(Mode.SHORTBREAK);
           setTime(timerOptions?.shortBreak || Time.SHORTBREAK);
@@ -104,9 +104,9 @@ export const TimerContextProvider = ({
     }
   }, [time, isActive, setPomodoroTimeAndMode, cyclesCount]);
 
-  useEffect(()=>{
+  useEffect(() => {
     mode !== Mode.POMODORO && setCyclesCount((state) => state + 1);
-  },[mode])
+  }, [mode]);
 
   return (
     <TimerContext.Provider
