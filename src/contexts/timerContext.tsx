@@ -18,9 +18,6 @@ interface ITimerContextProps {
   setTime: (number: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
-  startPomodoro: () => void;
-  startShortBreak: () => void;
-  startLongBreak: () => void;
 }
 
 interface ITimerContextProviderProps {
@@ -40,9 +37,7 @@ export const TimerContext = createContext({} as ITimerContextProps);
 export const TimerContextProvider = ({
   children,
 }: ITimerContextProviderProps) => {
-  const [time, setTime] = useState<number>(
-    JSON.parse(localStorage.getItem("timerOptions") || "") || Time.POMODORO
-  );
+  const [time, setTime] = useState<number>(Time.POMODORO);
   const [timerOptions, setTimerOptions] = useState<ITimerOptions>();
   const [isActive, setIsActive] = useState<boolean>(false);
   const [mode, setMode] = useState<string>(Mode.POMODORO);
@@ -56,47 +51,39 @@ export const TimerContextProvider = ({
     setIsActive(true);
   };
 
-  const startPomodoro = useCallback(() => {
-    setMode(Mode.POMODORO);
-    setTime(timerOptions?.pomodoro || Time.POMODORO);
-  }, [timerOptions?.pomodoro]);
-
-  const startShortBreak = useCallback(() => {
-    setMode(Mode.SHORTBREAK);
-    setTime(timerOptions?.shortBreak || Time.SHORTBREAK);
-  }, [timerOptions?.shortBreak]);
-
-  const startLongBreak = useCallback(() => {
-    setMode(Mode.LONGBREAK);
-    setTime(timerOptions?.longBreak || Time.LONGBREAK);
-  }, [timerOptions?.longBreak]);
-
   const resetTimer = useCallback(() => {
     clearTimeout(TimeOut);
     setCyclesCount(0);
     setIsActive(false);
     setHasFinished(true);
-    startPomodoro();
-  }, [startPomodoro]);
+    setTime(timerOptions?.pomodoro || Time.POMODORO)
+    setMode(Mode.POMODORO);
+  }, [timerOptions]);
 
-  const handleAfterTimerEnds = useCallback(() => {
-    if (mode == Mode.POMODORO) {
-      setCyclesCount(cyclesCount + 1);
-      cyclesCount < 3 ? startShortBreak() : startLongBreak();
-    } else if (mode === Mode.SHORTBREAK) {
-      startPomodoro();
-    } else {
-      resetTimer();
-      setIsActive(true);
-    }
-  }, [
-    cyclesCount,
-    mode,
-    resetTimer,
-    startLongBreak,
-    startPomodoro,
-    startShortBreak,
-  ]);
+  const setPomodoroTimeAndMode = useCallback(
+    (count: number) => {
+      if (mode === Mode.POMODORO) {
+        console.log('pomodoro completed')
+        if (count < 3) {
+          setMode(Mode.SHORTBREAK);
+          setTime(timerOptions?.shortBreak || Time.SHORTBREAK);
+        } else {
+          setMode(Mode.LONGBREAK);
+          setTime(timerOptions?.longBreak || Time.LONGBREAK);
+        }
+      }
+
+      if (mode === Mode.SHORTBREAK) {
+        setMode(Mode.POMODORO);
+        setTime(timerOptions?.pomodoro || Time.POMODORO);
+      }
+
+      if (mode === Mode.LONGBREAK) {
+        resetTimer();
+      }
+    },
+    [mode, resetTimer, timerOptions]
+  );
 
   useEffect(() => {
     const timerOptionsExist = localStorage.getItem("timerOptions");
@@ -113,9 +100,13 @@ export const TimerContextProvider = ({
         setTime(time - 1);
       }, 1000);
     } else if (isActive && time == 0) {
-      handleAfterTimerEnds();
+      setPomodoroTimeAndMode(cyclesCount);
     }
-  }, [time, isActive, handleAfterTimerEnds]);
+  }, [time, isActive, setPomodoroTimeAndMode, cyclesCount]);
+
+  useEffect(()=>{
+    mode !== Mode.POMODORO && setCyclesCount((state) => state + 1);
+  },[mode])
 
   return (
     <TimerContext.Provider
@@ -130,9 +121,6 @@ export const TimerContextProvider = ({
         resetTimer,
         setTime,
         startTimer,
-        startPomodoro,
-        startShortBreak,
-        startLongBreak,
       }}
     >
       {children}
