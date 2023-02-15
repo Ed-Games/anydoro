@@ -24,7 +24,7 @@ export const TimerOptions = ({
   setIsVisible,
 }: ITimerOptionsProps) => {
   const [initialValues, setInitialValues] = useState<ITimerOptions>();
-  const { timerOptions } = useTimer();
+  const { timerOptions, setTimerOptions } = useTimer();
 
   const handleSavePomodoroOptions = (options: ITimerOptions) => {
     const pomodoro = textToSenconds(options.pomodoro);
@@ -36,6 +36,7 @@ export const TimerOptions = ({
       shortBreak,
       longBreak,
     };
+    setTimerOptions(timerOptions);
 
     localStorage.setItem("timerOptions", JSON.stringify(timerOptions));
 
