@@ -1,6 +1,8 @@
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useCallback,
   useEffect,
   useState,
@@ -22,6 +24,7 @@ interface ITimerContextProps {
   cyclesCount: number;
   time: number;
   timerOptions?: ITimerOptions;
+  setTimerOptions: Dispatch<SetStateAction<ITimerOptions | undefined>>;
   setTime: (number: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
@@ -114,6 +117,10 @@ export const TimerContextProvider = ({
     mode !== Mode.POMODORO && setCyclesCount((state) => state + 1);
   }, [mode]);
 
+  useEffect(()=>{
+    resetTimer();
+  },[resetTimer, timerOptions])
+
   return (
     <TimerContext.Provider
       value={{
@@ -125,6 +132,7 @@ export const TimerContextProvider = ({
         cyclesCount,
         time,
         timerOptions,
+        setTimerOptions,
         resetTimer,
         setTime,
         startTimer,
