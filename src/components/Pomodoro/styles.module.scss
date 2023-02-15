@@ -43,6 +43,8 @@
     border-radius: 8px;
     height: 200px;
     width: 100%;
+    cursor: default;
+    user-select: none;
 
     span{
       font-family: 'Rajdhani', sans-serif;
