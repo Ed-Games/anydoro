@@ -9,12 +9,13 @@ interface ITimeInputProps {
   name: string;
   title: string;
   value: string;
+  defaultValue?: string;
   error?: string;
   showError?: boolean;
   onChange: (...args:any[]) => void;
 }
 
-export const TimeInput = ({ title, name, value, error, showError, onChange  }: ITimeInputProps ) => {
+export const TimeInput = ({ title, name, value, defaultValue, error, showError, onChange  }: ITimeInputProps ) => {
   return (
     <div className="column-wrapper">
       <span>{title}</span>
@@ -23,6 +24,7 @@ export const TimeInput = ({ title, name, value, error, showError, onChange  }: I
           mask={timeRegex}
           placeholder="00:00"
           value={value}
+          defaultValue={defaultValue}
           name={name}
           onChange={onChange}
           type="text"
