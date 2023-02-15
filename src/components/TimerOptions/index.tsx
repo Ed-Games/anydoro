@@ -4,6 +4,9 @@ import styles from "./styles.module.scss";
 import { timerOptionsSchema } from "../../validators/timerOptionsSchema";
 import { TimeInput } from "../TimeInput";
 import { textToSenconds } from "../../utils/textToSeconds";
+import { useEffect, useState } from "react";
+import { useTimer } from "../../hooks/useTimer";
+import { secondsToText } from "../../utils/secondsToText";
 
 interface ITimerOptionsProps {
   isVisible: boolean;
@@ -20,6 +23,9 @@ export const TimerOptions = ({
   isVisible,
   setIsVisible,
 }: ITimerOptionsProps) => {
+  const [initialValues, setInitialValues] = useState<ITimerOptions>();
+  const { timerOptions } = useTimer();
+
   const handleSavePomodoroOptions = (options: ITimerOptions) => {
     const pomodoro = textToSenconds(options.pomodoro);
     const shortBreak = textToSenconds(options.shortBreak);
@@ -35,14 +41,22 @@ export const TimerOptions = ({
 
     setIsVisible(false);
   };
+
+  useEffect(()=> {
+    if(timerOptions){
+      setInitialValues({
+        longBreak: secondsToText(timerOptions.longBreak),
+        pomodoro: secondsToText(timerOptions.pomodoro),
+        shortBreak: secondsToText(timerOptions.shortBreak)
+      })
+    } 
+  }, [timerOptions])
+
   return (
     <Modal isVisible={isVisible} setIsModalVisible={setIsVisible}>
-      <Formik
-        initialValues={{
-          pomodoro: "",
-          shortBreak: "",
-          longBreak: "",
-        }}
+      { initialValues && (
+        <Formik
+        initialValues={initialValues}
         validationSchema={timerOptionsSchema}
         onSubmit={(values) => handleSavePomodoroOptions(values)}
       >
@@ -85,6 +99,7 @@ export const TimerOptions = ({
           </form>
         )}
       </Formik>
+      ) }
     </Modal>
   );
 };
