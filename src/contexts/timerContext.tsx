@@ -7,6 +7,12 @@ import {
 } from "react";
 import { Mode, Time } from "../enums";
 
+interface ITimerOptions {
+  pomodoro: number;
+  shortBreak: number;
+  longBreak: number;
+}
+
 interface ITimerContextProps {
   isActive: boolean;
   hasFinished: boolean;
@@ -15,6 +21,7 @@ interface ITimerContextProps {
   mode: string;
   cyclesCount: number;
   time: number;
+  timerOptions?: ITimerOptions;
   setTime: (number: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
@@ -22,12 +29,6 @@ interface ITimerContextProps {
 
 interface ITimerContextProviderProps {
   children: ReactNode;
-}
-
-interface ITimerOptions {
-  pomodoro: number;
-  shortBreak: number;
-  longBreak: number;
 }
 
 let TimeOut: NodeJS.Timeout;
@@ -56,26 +57,25 @@ export const TimerContextProvider = ({
     setCyclesCount(0);
     setIsActive(false);
     setHasFinished(true);
-    setTime(timerOptions?.pomodoro || Time.POMODORO);
+    setTime(timerOptions!.pomodoro);
     setMode(Mode.POMODORO);
   }, [timerOptions]);
 
   const setPomodoroTimeAndMode = useCallback(
     (count: number) => {
       if (mode === Mode.POMODORO) {
-        console.log("pomodoro completed");
         if (count < 3) {
           setMode(Mode.SHORTBREAK);
-          setTime(timerOptions?.shortBreak || Time.SHORTBREAK);
+          setTime(timerOptions!.shortBreak);
         } else {
           setMode(Mode.LONGBREAK);
-          setTime(timerOptions?.longBreak || Time.LONGBREAK);
+          setTime(timerOptions!.longBreak);
         }
       }
 
       if (mode === Mode.SHORTBREAK) {
         setMode(Mode.POMODORO);
-        setTime(timerOptions?.pomodoro || Time.POMODORO);
+        setTime(timerOptions!.pomodoro);
       }
 
       if (mode === Mode.LONGBREAK) {
@@ -91,6 +91,12 @@ export const TimerContextProvider = ({
       const timerOptions: ITimerOptions = JSON.parse(timerOptionsExist);
       setTime(timerOptions.pomodoro);
       setTimerOptions(timerOptions);
+    } else {
+      setTimerOptions({
+        longBreak: Time.LONGBREAK,
+        pomodoro: Time.POMODORO,
+        shortBreak: Time.SHORTBREAK,
+      });
     }
   }, []);
 
@@ -118,6 +124,7 @@ export const TimerContextProvider = ({
         mode,
         cyclesCount,
         time,
+        timerOptions,
         resetTimer,
         setTime,
         startTimer,
