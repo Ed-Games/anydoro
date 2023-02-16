@@ -20,6 +20,7 @@ interface IRoomContextProvider {
   handleLoadRoomAndAddUser: (user: IUser) => void;
   handleSetRoomTimer: (time: number, mode: string) => Promise<void>;
   handleSetRoomTimerOptions: (timerOptions: ITimerOptions) => Promise<void>;
+  handleGetRoomTimerOptions: () => ITimerOptions;
 }
 
 export const RoomContext = createContext({} as IRoomContextProvider);
@@ -106,6 +107,26 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     await set(roomRef, { ...room, ...timerOptions });
   };
 
+  const handleGetRoomTimerOptions = () => {
+    if(room) {
+      const timerOptions: ITimerOptions = {
+        longBreak: room.longBreak,
+        pomodoro: room.pomodoro,
+        shortBreak: room.shortBreak
+      }
+  
+      return timerOptions;
+    } else {
+      const timerOptions: ITimerOptions = {
+        longBreak: Time.LONGBREAK,
+        pomodoro: Time.POMODORO,
+        shortBreak: Time.SHORTBREAK
+      }
+
+      return timerOptions
+    }
+  }
+
   return (
     <RoomContext.Provider
       value={{
@@ -114,7 +135,8 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         handleLoadRoomAndAddUser,
         handleCloseRoom,
         handleSetRoomTimer,
-        handleSetRoomTimerOptions
+        handleSetRoomTimerOptions,
+        handleGetRoomTimerOptions
       }}
     >
       {children}
