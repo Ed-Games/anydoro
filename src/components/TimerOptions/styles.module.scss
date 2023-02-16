@@ -38,4 +38,30 @@
       }
     }
   }
+
+  @media(max-width:500px){
+    height: 90vh;
+    align-items: center;
+    justify-content: center;
+
+    .InputContainer{
+      flex-direction: column;
+      width: 100%;
+
+      span{
+        align-self: flex-start;
+        font-size: 15px;
+        margin-top: 10px;
+      }
+    }
+
+    .btnContainer{
+      flex-direction: column;
+      width: 100%;
+      button{
+        min-width: 100%;
+      }
+    }
+  }
+
 }
