@@ -86,14 +86,6 @@ export const TimerContextProvider = ({
   );
 
   useEffect(() => {
-    room && setTimerOptions({
-      longBreak: room.longBreak || Time.LONGBREAK,
-      shortBreak: room.shortBreak || Time.SHORTBREAK,
-      pomodoro: room.pomodoro || Time.POMODORO
-    })
-  }, [room]);
-
-  useEffect(() => {
     if (isActive && time > 0) {
       TimeOut = setTimeout(() => {
         setTime(time - 1);
