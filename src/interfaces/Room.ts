@@ -8,4 +8,7 @@ export interface IRoom {
   endedAt?: string;
   currentTimerMode?: string;
   currentTimerValue?: number;
+  pomodoro: number;
+  shortBreak: number;
+  longBreak: number;
 }
