@@ -8,12 +8,8 @@ import {
   useState,
 } from "react";
 import { Mode, Time } from "../enums";
-
-interface ITimerOptions {
-  pomodoro: number;
-  shortBreak: number;
-  longBreak: number;
-}
+import { useRoom } from "../hooks/useRoom";
+import { ITimerOptions } from "../interfaces/timerOptions";
 
 interface ITimerContextProps {
   isActive: boolean;
@@ -47,6 +43,7 @@ export const TimerContextProvider = ({
   const [mode, setMode] = useState<string>(Mode.POMODORO);
   const [cyclesCount, setCyclesCount] = useState<number>(0);
   const [hasFinished, setHasFinished] = useState<boolean>(false);
+  const { room } = useRoom();
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -89,19 +86,12 @@ export const TimerContextProvider = ({
   );
 
   useEffect(() => {
-    const timerOptionsExist = localStorage.getItem("timerOptions");
-    if (timerOptionsExist) {
-      const timerOptions: ITimerOptions = JSON.parse(timerOptionsExist);
-      setTime(timerOptions.pomodoro);
-      setTimerOptions(timerOptions);
-    } else {
-      setTimerOptions({
-        longBreak: Time.LONGBREAK,
-        pomodoro: Time.POMODORO,
-        shortBreak: Time.SHORTBREAK,
-      });
-    }
-  }, []);
+    room && setTimerOptions({
+      longBreak: room.longBreak || Time.LONGBREAK,
+      shortBreak: room.shortBreak || Time.SHORTBREAK,
+      pomodoro: room.pomodoro || Time.POMODORO
+    })
+  }, [room]);
 
   useEffect(() => {
     if (isActive && time > 0) {
