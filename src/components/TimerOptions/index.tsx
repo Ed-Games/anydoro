@@ -7,6 +7,7 @@ import { textToSenconds } from "../../utils/textToSeconds";
 import { useEffect, useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import { secondsToText } from "../../utils/secondsToText";
+import { useRoom } from "../../hooks/useRoom";
 
 interface ITimerOptionsProps {
   isVisible: boolean;
@@ -25,8 +26,9 @@ export const TimerOptions = ({
 }: ITimerOptionsProps) => {
   const [initialValues, setInitialValues] = useState<ITimerOptions>();
   const { timerOptions, setTimerOptions } = useTimer();
+  const { handleSetRoomTimerOptions } = useRoom();
 
-  const handleSavePomodoroOptions = (options: ITimerOptions) => {
+  const handleSavePomodoroOptions = async(options: ITimerOptions) => {
     const pomodoro = textToSenconds(options.pomodoro);
     const shortBreak = textToSenconds(options.shortBreak);
     const longBreak = textToSenconds(options.longBreak);
@@ -37,8 +39,7 @@ export const TimerOptions = ({
       longBreak,
     };
     setTimerOptions(timerOptions);
-
-    localStorage.setItem("timerOptions", JSON.stringify(timerOptions));
+    await handleSetRoomTimerOptions(timerOptions);
 
     setIsVisible(false);
   };
