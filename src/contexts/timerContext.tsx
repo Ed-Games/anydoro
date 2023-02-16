@@ -118,7 +118,7 @@ export const TimerContextProvider = ({
   }, [mode]);
 
   useEffect(()=>{
-    resetTimer();
+    timerOptions && resetTimer();
   },[resetTimer, timerOptions])
 
   return (
