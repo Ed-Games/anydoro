@@ -19,6 +19,7 @@
     border-radius: 8px;
     background: var(--white);
     max-width: 100%;
+    width: 500px;
     position: relative;
 
     .closeButton{
@@ -30,6 +31,10 @@
 
     .children{
       margin-top: 20px;
+    }
+
+    @media(max-width:450px){
+      padding: 20px;
     }
   }
 }
