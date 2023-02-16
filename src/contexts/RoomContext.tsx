@@ -6,6 +6,8 @@ import { IRoom } from "../interfaces/Room";
 import { IUser } from "../interfaces/User";
 import { database } from "../services/firebase";
 import { uuidv4 } from "@firebase/util";
+import { Time } from "../enums";
+import { ITimerOptions } from "../interfaces/timerOptions";
 
 interface IRoomContextProps {
   children: ReactNode;
@@ -17,6 +19,7 @@ interface IRoomContextProvider {
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
   handleSetRoomTimer: (time: number, mode: string) => Promise<void>;
+  handleSetRoomTimerOptions: (timerOptions: ITimerOptions) => Promise<void>;
 }
 
 export const RoomContext = createContext({} as IRoomContextProvider);
@@ -28,7 +31,14 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const handleCreateRoom = async (name: string, user: IUser) => {
     try {
       const roomRef = ref(database, "rooms/" + uuidv4());
-      await set(roomRef, { name, adminId: user.id, createdAt: Date.now() });
+      await set(roomRef, {
+        name,
+        adminId: user.id,
+        createdAt: Date.now(),
+        pomodoro: Time.POMODORO,
+        longBreak: Time.LONGBREAK,
+        shortBreak: Time.SHORTBREAK,
+      });
       router.push(`/rooms/${roomRef.key}`);
     } catch (error) {
       toast.error("Houve um erro ao tentar criar a sala.");
@@ -82,10 +92,19 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const handleSetRoomTimer = useCallback(
     async (time: number, mode: string) => {
       const roomRef = ref(database, `rooms/${router.query.slug}`);
-      await set(roomRef, { ...room, currentTimerValue: time, currentTimerMode: mode });
+      await set(roomRef, {
+        ...room,
+        currentTimerValue: time,
+        currentTimerMode: mode,
+      });
     },
     [room, router]
   );
+
+  const handleSetRoomTimerOptions = async (timerOptions: ITimerOptions) => {
+    const roomRef = ref(database, `rooms/${router.query.slug}`);
+    await set(roomRef, { ...room, ...timerOptions });
+  };
 
   return (
     <RoomContext.Provider
@@ -94,7 +113,8 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         handleCreateRoom,
         handleLoadRoomAndAddUser,
         handleCloseRoom,
-        handleSetRoomTimer
+        handleSetRoomTimer,
+        handleSetRoomTimerOptions
       }}
     >
       {children}
