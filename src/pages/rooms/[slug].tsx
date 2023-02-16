@@ -4,16 +4,20 @@ import Header from "../../components/Header";
 import Pomodoro from "../../components/Pomodoro";
 import { TimerContextProvider } from "../../contexts/timerContext";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../hooks/useAuth";
 import { useRoom } from "../../hooks/useRoom";
 import { BottomTabNavigator } from "../../components/BottomTabNavigator";
+import { useTimer } from "../../hooks/useTimer";
 
 const Room: NextPage = () => {
+  const [shouldRetriveTimerOptions, setShouldRetriveTimerOptions] =
+    useState(false);
   const { user } = useAuth();
+  const { setTimerOptions } = useTimer();
   const router = useRouter();
-  const { handleLoadRoomAndAddUser } = useRoom();
+  const { handleLoadRoomAndAddUser, handleGetRoomTimerOptions } = useRoom();
 
   useEffect(() => {
     if (user === undefined) return;
@@ -21,21 +25,28 @@ const Room: NextPage = () => {
     if (!user) {
       router.push("/");
       return;
+    } else {
+      handleLoadRoomAndAddUser(user);
+      setShouldRetriveTimerOptions(true);
     }
-    handleLoadRoomAndAddUser(user);
   }, [handleLoadRoomAndAddUser, router, user]);
 
+  useEffect(() => {
+    if (shouldRetriveTimerOptions) {
+      setTimerOptions(handleGetRoomTimerOptions());
+      setShouldRetriveTimerOptions(false);
+    }
+  }, [handleGetRoomTimerOptions, shouldRetriveTimerOptions, setTimerOptions]);
+
   return (
-    <TimerContextProvider>
-      <div id="room" className="container">
-        <Head>
-          <title>Anydoro | Timer </title>
-        </Head>
-        <Header />
-        <Pomodoro />
-        <BottomTabNavigator />
-      </div>
-    </TimerContextProvider>
+    <div id="room" className="container">
+      <Head>
+        <title>Anydoro | Timer </title>
+      </Head>
+      <Header />
+      <Pomodoro />
+      <BottomTabNavigator />
+    </div>
   );
 };
 
