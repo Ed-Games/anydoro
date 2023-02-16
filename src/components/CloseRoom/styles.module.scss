@@ -16,4 +16,13 @@
     }
   }
 
+  @media(max-width:500px){
+    flex-direction: column;
+    gap: 20px;
+
+    button{
+      width: 100%;
+    }
+  }
+
 }
