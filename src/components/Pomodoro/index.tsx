@@ -6,7 +6,6 @@ import { TimerOptions } from "../TimerOptions";
 import { Progressbar } from "../ProgressBar";
 import { Mode } from "../../enums";
 import { toast } from "react-toastify";
-import { useAuth } from "../../hooks/useAuth";
 import { useRoom } from "../../hooks/useRoom";
 
 const Pomodoro: NextPage = () => {
@@ -23,8 +22,7 @@ const Pomodoro: NextPage = () => {
     cyclesCount,
   } = useTimer();
 
-  const { user } = useAuth();
-  const { room, handleSetRoomTimer } = useRoom();
+  const { handleSetRoomTimer } = useRoom();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
@@ -41,13 +39,6 @@ const Pomodoro: NextPage = () => {
       );
     }
   }, [mode]);
-
-
-  useEffect( () => {
-    if(user?.id === room?.adminId){
-      handleSetRoomTimer(time, mode);
-    }
-  }, [handleSetRoomTimer, mode, room, time, user])
 
   return (
     <div className={styles.pomodoro}>
