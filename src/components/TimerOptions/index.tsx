@@ -38,8 +38,8 @@ export const TimerOptions = ({
       shortBreak,
       longBreak,
     };
-    setTimerOptions(timerOptions);
     await handleSetRoomTimerOptions(timerOptions);
+    setTimerOptions(timerOptions);
 
     setIsVisible(false);
   };
