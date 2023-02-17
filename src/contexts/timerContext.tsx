@@ -43,7 +43,7 @@ export const TimerContextProvider = ({
   const [mode, setMode] = useState<string>(Mode.POMODORO);
   const [cyclesCount, setCyclesCount] = useState<number>(0);
   const [hasFinished, setHasFinished] = useState<boolean>(false);
-  const { room } = useRoom();
+  const { handleSetRoomTimer } = useRoom();
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -102,6 +102,10 @@ export const TimerContextProvider = ({
   useEffect(()=>{
     timerOptions && resetTimer();
   },[resetTimer, timerOptions])
+
+  useEffect(()=>{
+    isActive && handleSetRoomTimer(time, mode)
+  },[handleSetRoomTimer, isActive, mode, time])
 
   return (
     <TimerContext.Provider
