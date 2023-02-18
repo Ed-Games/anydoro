@@ -6,7 +6,7 @@ import { IRoom } from "../interfaces/Room";
 import { IUser } from "../interfaces/User";
 import { database } from "../services/firebase";
 import { uuidv4 } from "@firebase/util";
-import { Time } from "../enums";
+import { Mode, Time } from "../enums";
 import { ITimerOptions } from "../interfaces/timerOptions";
 
 interface IRoomContextProps {
@@ -39,6 +39,8 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         pomodoro: Time.POMODORO,
         longBreak: Time.LONGBREAK,
         shortBreak: Time.SHORTBREAK,
+        currentTimerValue: Time.POMODORO,
+        currentTimerMode: Mode.POMODORO
       });
       router.push(`/rooms/${roomRef.key}`);
     } catch (error) {
@@ -93,7 +95,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const handleSetRoomTimer = useCallback(
     async (time: number, mode: string) => {
       const roomRef = ref(database, `rooms/${router.query.slug}`);
-      await set(roomRef, {
+      room?.currentTimerMode && await set(roomRef, {
         ...room,
         currentTimerValue: time,
         currentTimerMode: mode,
