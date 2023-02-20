@@ -17,7 +17,7 @@ const Room: NextPage = () => {
   const { user } = useAuth();
   const { setTimerOptions } = useTimer();
   const router = useRouter();
-  const { handleLoadRoomAndAddUser, handleGetRoomTimerOptions } = useRoom();
+  const { hasRoomLoaded, handleLoadRoomAndAddUser, handleGetRoomTimerOptions } = useRoom();
 
   useEffect(() => {
     if (user === undefined) return;
@@ -32,11 +32,11 @@ const Room: NextPage = () => {
   }, [handleLoadRoomAndAddUser, router, user]);
 
   useEffect(() => {
-    if (shouldRetriveTimerOptions) {
+    if (shouldRetriveTimerOptions && hasRoomLoaded) {
       setTimerOptions(handleGetRoomTimerOptions());
       setShouldRetriveTimerOptions(false);
     }
-  }, [handleGetRoomTimerOptions, shouldRetriveTimerOptions, setTimerOptions]);
+  }, [handleGetRoomTimerOptions, shouldRetriveTimerOptions, hasRoomLoaded, setTimerOptions]);
 
   return (
     <div id="room" className="container">
