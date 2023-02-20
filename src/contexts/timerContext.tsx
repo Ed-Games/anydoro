@@ -5,9 +5,11 @@ import {
   SetStateAction,
   useCallback,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 import { Mode, Time } from "../enums";
+import { useAuth } from "../hooks/useAuth";
 import { useRoom } from "../hooks/useRoom";
 import { ITimerOptions } from "../interfaces/timerOptions";
 
@@ -43,7 +45,13 @@ export const TimerContextProvider = ({
   const [mode, setMode] = useState<string>(Mode.POMODORO);
   const [cyclesCount, setCyclesCount] = useState<number>(0);
   const [hasFinished, setHasFinished] = useState<boolean>(false);
-  const { handleSetRoomTimer } = useRoom();
+  const { handleSetRoomTimer, room } = useRoom();
+  const { user } = useAuth();
+
+  const isAdmin = useMemo(
+    () => room?.adminId === user?.id,
+    [room?.adminId, user?.id]
+  );
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -86,26 +94,37 @@ export const TimerContextProvider = ({
   );
 
   useEffect(() => {
-    if (isActive && time > 0) {
-      TimeOut = setTimeout(() => {
-        setTime(time - 1);
-      }, 1000);
-    } else if (isActive && time == 0) {
-      setPomodoroTimeAndMode(cyclesCount);
+    if (isAdmin === undefined) {
+      return;
     }
-  }, [time, isActive, setPomodoroTimeAndMode, cyclesCount]);
+
+    console.log(isAdmin, room);
+  
+    if (isAdmin) {
+      if (isActive && time > 0) {
+        TimeOut = setTimeout(() => {
+          setTime(time - 1);
+        }, 1000);
+      } else if (isActive && time == 0) {
+        setPomodoroTimeAndMode(cyclesCount);
+      }
+    } else if (room) {
+      setTime(room.currentTimerValue as number);
+      setMode(room.currentTimerMode as string);
+    }
+  }, [time, isActive, setPomodoroTimeAndMode, cyclesCount, isAdmin, room]);
 
   useEffect(() => {
     mode !== Mode.POMODORO && setCyclesCount((state) => state + 1);
   }, [mode]);
 
-  useEffect(()=>{
+  useEffect(() => {
     timerOptions && resetTimer();
-  },[resetTimer, timerOptions])
+  }, [resetTimer, timerOptions]);
 
-  useEffect(()=>{
-    isActive && handleSetRoomTimer(time, mode)
-  },[handleSetRoomTimer, isActive, mode, time])
+  useEffect(() => {
+    isActive && handleSetRoomTimer(time, mode);
+  }, [handleSetRoomTimer, isActive, mode, time]);
 
   return (
     <TimerContext.Provider
