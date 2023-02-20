@@ -97,8 +97,6 @@ export const TimerContextProvider = ({
     if (isAdmin === undefined) {
       return;
     }
-
-    console.log(isAdmin, room);
   
     if (isAdmin) {
       if (isActive && time > 0) {
