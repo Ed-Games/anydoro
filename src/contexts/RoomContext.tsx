@@ -15,6 +15,7 @@ interface IRoomContextProps {
 
 interface IRoomContextProvider {
   room: IRoom | undefined;
+  hasRoomLoaded: boolean;
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
@@ -27,6 +28,7 @@ export const RoomContext = createContext({} as IRoomContextProvider);
 
 export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const [room, setRoom] = useState<IRoom>();
+  const [hasRoomLoaded, setHasRoomLoaded] = useState<boolean>(false);
   const router = useRouter();
 
   const handleCreateRoom = async (name: string, user: IUser) => {
@@ -80,6 +82,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         }
 
         setRoom(localRoom);
+        setHasRoomLoaded(true);
       });
     },
     [router]
@@ -133,6 +136,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     <RoomContext.Provider
       value={{
         room,
+        hasRoomLoaded,
         handleCreateRoom,
         handleLoadRoomAndAddUser,
         handleCloseRoom,
