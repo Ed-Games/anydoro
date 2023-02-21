@@ -3,7 +3,7 @@ import Head from "next/head";
 import Header from "../../components/Header";
 import Pomodoro from "../../components/Pomodoro";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../hooks/useAuth";
 import { useRoom } from "../../hooks/useRoom";
@@ -15,7 +15,7 @@ const Room: NextPage = () => {
   const { user } = useAuth();
   const { setTimerOptions } = useTimer();
   const router = useRouter();
-  const { hasRoomLoaded, handleLoadRoomAndAddUser, handleGetRoomTimerOptions } =
+  const { hasRoomLoaded, timerOptions, handleLoadRoomAndAddUser } =
     useRoom();
 
   useEffect(() => {
@@ -29,11 +29,11 @@ const Room: NextPage = () => {
     }
   }, [handleLoadRoomAndAddUser, router, user]);
 
-  useEffect(() => {
-    if (hasRoomLoaded) {
-      setTimerOptions(handleGetRoomTimerOptions());
-    }
-  }, [handleGetRoomTimerOptions, hasRoomLoaded, setTimerOptions]);
+
+  useEffect(()=> {
+    setTimerOptions(JSON.parse(timerOptions))
+  }, [setTimerOptions, timerOptions])
+
 
   return (
     <div id="room" className="container">

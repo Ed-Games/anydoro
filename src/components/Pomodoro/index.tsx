@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
@@ -7,7 +6,7 @@ import { Progressbar } from "../ProgressBar";
 import { Mode } from "../../enums";
 import { toast } from "react-toastify";
 
-const Pomodoro: NextPage = () => {
+const Pomodoro = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
 
   const {

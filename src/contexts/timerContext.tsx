@@ -117,7 +117,7 @@ export const TimerContextProvider = ({
   }, [mode]);
 
   useEffect(() => {
-    if(!isActive && timerOptions) {
+    if (!isActive && timerOptions) {
       resetTimer();
     }
   }, [isActive, resetTimer, timerOptions]);
