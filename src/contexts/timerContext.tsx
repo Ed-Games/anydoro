@@ -99,13 +99,15 @@ export const TimerContextProvider = ({
     mode !== Mode.POMODORO && setCyclesCount((state) => state + 1);
   }, [mode]);
 
-  useEffect(()=>{
-    timerOptions && resetTimer();
-  },[resetTimer, timerOptions])
+  useEffect(() => {
+    if (!isActive && timerOptions) {
+      resetTimer();
+    }
+  }, [isActive, resetTimer, timerOptions]);
 
-  useEffect(()=>{
-    isActive && handleSetRoomTimer(time, mode)
-  },[handleSetRoomTimer, isActive, mode, time])
+  useEffect(() => {
+    isActive && handleSetRoomTimer(time, mode);
+  }, [handleSetRoomTimer, isActive, mode, time]);
 
   return (
     <TimerContext.Provider
