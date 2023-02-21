@@ -8,7 +8,7 @@ import { Mode } from "../../enums";
 import { toast } from "react-toastify";
 import { useRoom } from "../../hooks/useRoom";
 
-const Pomodoro: NextPage = () => {
+const Pomodoro = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
 
   const {
