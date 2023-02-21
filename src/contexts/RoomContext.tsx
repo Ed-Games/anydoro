@@ -1,6 +1,12 @@
 import { onValue, ref, set } from "firebase/database";
 import { useRouter } from "next/router";
-import { createContext, ReactNode, useCallback, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useMemo,
+  useState,
+} from "react";
 import { toast } from "react-toastify";
 import { IRoom } from "../interfaces/Room";
 import { IUser } from "../interfaces/User";
@@ -14,6 +20,7 @@ interface IRoomContextProps {
 }
 
 interface IRoomContextProvider {
+  timerOptions: string;
   room: IRoom | undefined;
   hasRoomLoaded: boolean;
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
@@ -21,7 +28,6 @@ interface IRoomContextProvider {
   handleLoadRoomAndAddUser: (user: IUser) => void;
   handleSetRoomTimer: (time: number, mode: string) => Promise<void>;
   handleSetRoomTimerOptions: (timerOptions: ITimerOptions) => Promise<void>;
-  handleGetRoomTimerOptions: () => ITimerOptions;
 }
 
 export const RoomContext = createContext({} as IRoomContextProvider);
@@ -29,7 +35,28 @@ export const RoomContext = createContext({} as IRoomContextProvider);
 export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const [room, setRoom] = useState<IRoom>();
   const [hasRoomLoaded, setHasRoomLoaded] = useState<boolean>(false);
+  const [roomTimerOptions, setRoomTimerOptions] = useState<ITimerOptions>();
   const router = useRouter();
+
+  const timerOptions = useMemo(() => {
+    if (roomTimerOptions) {
+      const timerOptions: ITimerOptions = {
+        longBreak: roomTimerOptions.longBreak,
+        pomodoro: roomTimerOptions.pomodoro,
+        shortBreak: roomTimerOptions.shortBreak,
+      };
+
+      return JSON.stringify(timerOptions);
+    } else {
+      const timerOptions: ITimerOptions = {
+        longBreak: Time.LONGBREAK,
+        pomodoro: Time.POMODORO,
+        shortBreak: Time.SHORTBREAK,
+      };
+
+      return  JSON.stringify(timerOptions);
+    }
+  }, [roomTimerOptions]);
 
   const handleCreateRoom = async (name: string, user: IUser) => {
     try {
@@ -77,6 +104,12 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
               isAdmin: localRoom.adminId === user!.id,
             });
           }
+
+          setRoomTimerOptions({
+            longBreak: localRoom.longBreak,
+            pomodoro: localRoom.pomodoro,
+            shortBreak: localRoom.shortBreak,
+          });
         }
 
         setRoom(localRoom);
@@ -110,37 +143,18 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     await set(roomRef, { ...room, ...timerOptions });
   };
 
-  const handleGetRoomTimerOptions = () => {
-    if(room) {
-      const timerOptions: ITimerOptions = {
-        longBreak: room.longBreak,
-        pomodoro: room.pomodoro,
-        shortBreak: room.shortBreak
-      }
-  
-      return timerOptions;
-    } else {
-      const timerOptions: ITimerOptions = {
-        longBreak: Time.LONGBREAK,
-        pomodoro: Time.POMODORO,
-        shortBreak: Time.SHORTBREAK
-      }
-
-      return timerOptions
-    }
-  }
 
   return (
     <RoomContext.Provider
       value={{
         room,
         hasRoomLoaded,
+        timerOptions,
         handleCreateRoom,
         handleLoadRoomAndAddUser,
         handleCloseRoom,
         handleSetRoomTimer,
         handleSetRoomTimerOptions,
-        handleGetRoomTimerOptions
       }}
     >
       {children}
