@@ -117,8 +117,10 @@ export const TimerContextProvider = ({
   }, [mode]);
 
   useEffect(() => {
-    timerOptions && resetTimer();
-  }, [resetTimer, timerOptions]);
+    if(!isActive && timerOptions) {
+      resetTimer();
+    }
+  }, [isActive, resetTimer, timerOptions]);
 
   useEffect(() => {
     isActive && handleSetRoomTimer(time, mode);
