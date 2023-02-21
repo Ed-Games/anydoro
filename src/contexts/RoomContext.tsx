@@ -40,13 +40,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
 
   const timerOptions = useMemo(() => {
     if (roomTimerOptions) {
-      const timerOptions: ITimerOptions = {
-        longBreak: roomTimerOptions.longBreak,
-        pomodoro: roomTimerOptions.pomodoro,
-        shortBreak: roomTimerOptions.shortBreak,
-      };
-
-      return JSON.stringify(timerOptions);
+      return JSON.stringify(roomTimerOptions);
     } else {
       const timerOptions: ITimerOptions = {
         longBreak: Time.LONGBREAK,
