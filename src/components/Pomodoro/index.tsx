@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
