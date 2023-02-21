@@ -3,7 +3,7 @@ import Head from "next/head";
 import Header from "../../components/Header";
 import Pomodoro from "../../components/Pomodoro";
 import "react-toastify/dist/ReactToastify.css";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../hooks/useAuth";
 import { useRoom } from "../../hooks/useRoom";
