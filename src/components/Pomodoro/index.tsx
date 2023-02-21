@@ -5,7 +5,6 @@ import { TimerOptions } from "../TimerOptions";
 import { Progressbar } from "../ProgressBar";
 import { Mode } from "../../enums";
 import { toast } from "react-toastify";
-import { useRoom } from "../../hooks/useRoom";
 
 const Pomodoro = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
@@ -20,8 +19,6 @@ const Pomodoro = () => {
     mode,
     cyclesCount,
   } = useTimer();
-
-  const { handleSetRoomTimer } = useRoom();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
