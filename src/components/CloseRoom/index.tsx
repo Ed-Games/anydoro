@@ -1,26 +1,33 @@
+import { useRouter } from "next/router";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { useRoom } from "../../hooks/useRoom";
 import { Modal } from "../Modal";
-import styles from './styles.module.scss';
+import styles from "./styles.module.scss";
 
 interface ICloseRoomProps {
   isVisible: boolean;
   setIsVisible: (arg: boolean) => void;
 }
 
-export const CloseRoom = ({
-  isVisible,
-  setIsVisible,
-}: ICloseRoomProps) => {
-
+export const CloseRoom = ({ isVisible, setIsVisible }: ICloseRoomProps) => {
   const { handleCloseRoom } = useRoom();
+  const router = useRouter();
+  const isAdmin = useIsAdmin();
 
+  const handleLeaveRoom = () => {
+    router.push("/");
+  };
+
+  const handleClickConfirmButton = () => {
+    isAdmin ? handleCloseRoom() : handleLeaveRoom();
+  };
   return (
     <Modal isVisible={isVisible} setIsModalVisible={setIsVisible}>
-      <h2>Encerrar sala?</h2>
-      <span>Tem certeza que deseja encerrar essa sala?</span>
+      <h2>{isAdmin? "Encerrar" : "Sair dessa"} sala?</h2>
+      <span>Tem certeza que deseja { isAdmin? "encerrar essa" : "sair dessa"} sala?</span>
       <div className={styles.btnContainer}>
-        <button onClick={() => setIsVisible(false) }>Não, cancelar</button>
-        <button onClick={handleCloseRoom}>Sim, encerrar</button>
+        <button onClick={() => setIsVisible(false)}>Não, cancelar</button>
+        <button onClick={handleClickConfirmButton}>Sim, {isAdmin? "encerrar" : "sair"}</button>
       </div>
     </Modal>
   );
