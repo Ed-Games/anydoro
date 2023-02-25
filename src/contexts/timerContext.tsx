@@ -21,6 +21,7 @@ interface ITimerContextProps {
   cyclesCount: number;
   time: number;
   timerOptions?: ITimerOptions;
+  canEditTimer: boolean;
   setTimerOptions: Dispatch<SetStateAction<ITimerOptions | undefined>>;
   setTime: (number: number) => void;
   startTimer: () => void;
@@ -141,6 +142,7 @@ export const TimerContextProvider = ({
         cyclesCount,
         time,
         timerOptions,
+        canEditTimer: isAdmin,
         setTimerOptions,
         resetTimer,
         setTime,
