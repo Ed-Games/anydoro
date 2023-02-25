@@ -82,6 +82,15 @@
     width: 100%;
     height: 80px;
     font-weight: 600;
+
+    &:disabled{
+      background: var(--grey);
+      cursor: not-allowed;
+
+      &:hover{
+        background: var(--grey);
+      }
+    }
   }
 
   @media(max-width: 430px){
