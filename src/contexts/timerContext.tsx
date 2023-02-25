@@ -43,6 +43,7 @@ export const TimerContextProvider = ({
   const [isActive, setIsActive] = useState<boolean>(false);
   const [mode, setMode] = useState<string>(Mode.POMODORO);
   const [cyclesCount, setCyclesCount] = useState<number>(0);
+  const [hasFinished, setHasFinished] = useState<boolean>(false);
   const { handleSetRoomTimer, room } = useRoom();
   const { user } = useAuth();
 
@@ -55,6 +56,7 @@ export const TimerContextProvider = ({
   const seconds = time % 60;
 
   const startTimer = () => {
+    setHasFinished(false);
     setIsActive(true);
   };
 
@@ -64,24 +66,22 @@ export const TimerContextProvider = ({
     setIsActive(false);
     setTime(timerOptions!.pomodoro);
     setMode(Mode.POMODORO);
+    setHasFinished(true);
   }, [timerOptions]);
 
   const setPomodoroTimeAndMode = useCallback(
     (count: number) => {
       if (mode === Mode.POMODORO) {
         if (count < 3) {
-          console.log('short break');
           setMode(Mode.SHORTBREAK);
           setTime(timerOptions!.shortBreak);
         } else {
-          console.log('long break');
           setMode(Mode.LONGBREAK);
           setTime(timerOptions!.longBreak);
         }
       }
 
       if (mode === Mode.SHORTBREAK) {
-        console.log('pomodoro');
         setMode(Mode.POMODORO);
         setTime(timerOptions!.pomodoro);
       }
@@ -105,14 +105,13 @@ export const TimerContextProvider = ({
     }
   }, [time, isActive, setPomodoroTimeAndMode, cyclesCount, isAdmin]);
 
-
-  useEffect(()=> {
-    if (room && !isAdmin ) {
+  useEffect(() => {
+    if (room && !isAdmin) {
       setIsActive(room.isActive);
       setTime(room.currentTimerValue as number);
       setMode(room.currentTimerMode as string);
     }
-  }, [isAdmin, room])
+  }, [isAdmin, room]);
 
   useEffect(() => {
     mode !== Mode.POMODORO && setCyclesCount((state) => state + 1);
@@ -127,6 +126,10 @@ export const TimerContextProvider = ({
   useEffect(() => {
     isActive && isAdmin && handleSetRoomTimer(time, mode, isActive);
   }, [handleSetRoomTimer, isActive, isAdmin, mode, time]);
+
+  useEffect(() => {
+    hasFinished && isAdmin && handleSetRoomTimer(time, mode, isActive);
+  }, [handleSetRoomTimer, hasFinished, isActive, isAdmin, mode, time]);
 
   return (
     <TimerContext.Provider
