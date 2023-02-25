@@ -9,6 +9,7 @@ import { Formik } from "formik";
 import { FaGoogle } from "react-icons/fa";
 import { Presentation } from "../components/presentation";
 import { useAuth } from "../hooks/useAuth";
+import { codeSchema } from "../validators/roomCodeSchema";
 
 const Home: NextPage = () => {
   const { signInWithGoogle, user } = useAuth();
@@ -25,7 +26,7 @@ const Home: NextPage = () => {
     }
   };
 
-  const handleJoinRoom = async(code: string) => {
+  const handleJoinRoom = async (code: string) => {
     if (!user) await signInWithGoogle();
     Router.push(`/rooms/${code}`);
   };
@@ -60,6 +61,7 @@ const Home: NextPage = () => {
         <Formik
           initialValues={{ code: "" }}
           onSubmit={(values) => handleJoinRoom(values.code)}
+          validationSchema={codeSchema}
         >
           {({ handleChange, handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
@@ -68,6 +70,9 @@ const Home: NextPage = () => {
                 name="code"
                 onChange={handleChange}
               />
+              {errors.code && touched.code && (
+                <span className="error">{errors.code}</span>
+              )}
               <button type="submit" title="Entrar na sala">
                 Entrar na sala
               </button>
