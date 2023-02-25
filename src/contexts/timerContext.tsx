@@ -15,7 +15,6 @@ import { ITimerOptions } from "../interfaces/timerOptions";
 
 interface ITimerContextProps {
   isActive: boolean;
-  hasFinished: boolean;
   minutes: number;
   seconds: number;
   mode: string;
@@ -44,7 +43,6 @@ export const TimerContextProvider = ({
   const [isActive, setIsActive] = useState<boolean>(false);
   const [mode, setMode] = useState<string>(Mode.POMODORO);
   const [cyclesCount, setCyclesCount] = useState<number>(0);
-  const [hasFinished, setHasFinished] = useState<boolean>(false);
   const { handleSetRoomTimer, room } = useRoom();
   const { user } = useAuth();
 
@@ -64,7 +62,6 @@ export const TimerContextProvider = ({
     clearTimeout(TimeOut);
     setCyclesCount(0);
     setIsActive(false);
-    setHasFinished(true);
     setTime(timerOptions!.pomodoro);
     setMode(Mode.POMODORO);
   }, [timerOptions]);
@@ -73,15 +70,18 @@ export const TimerContextProvider = ({
     (count: number) => {
       if (mode === Mode.POMODORO) {
         if (count < 3) {
+          console.log('short break');
           setMode(Mode.SHORTBREAK);
           setTime(timerOptions!.shortBreak);
         } else {
+          console.log('long break');
           setMode(Mode.LONGBREAK);
           setTime(timerOptions!.longBreak);
         }
       }
 
       if (mode === Mode.SHORTBREAK) {
+        console.log('pomodoro');
         setMode(Mode.POMODORO);
         setTime(timerOptions!.pomodoro);
       }
@@ -129,7 +129,6 @@ export const TimerContextProvider = ({
   return (
     <TimerContext.Provider
       value={{
-        hasFinished,
         isActive,
         minutes,
         seconds,
