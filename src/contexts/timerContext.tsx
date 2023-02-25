@@ -1,15 +1,12 @@
 import {
   createContext,
-  Dispatch,
   ReactNode,
-  SetStateAction,
   useCallback,
   useEffect,
-  useMemo,
   useState,
 } from "react";
 import { Mode, Time } from "../enums";
-import { useAuth } from "../hooks/useAuth";
+import { useIsAdmin } from "../hooks/useIsAdmin";
 import { useRoom } from "../hooks/useRoom";
 import { ITimerOptions } from "../interfaces/timerOptions";
 
@@ -21,8 +18,7 @@ interface ITimerContextProps {
   cyclesCount: number;
   time: number;
   timerOptions?: ITimerOptions;
-  canEditTimer: boolean;
-  setTimerOptions: Dispatch<SetStateAction<ITimerOptions | undefined>>;
+  setTimerOptions: (timerOptions: ITimerOptions) => void;
   setTime: (number: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
@@ -46,12 +42,7 @@ export const TimerContextProvider = ({
   const [cyclesCount, setCyclesCount] = useState<number>(0);
   const [hasFinished, setHasFinished] = useState<boolean>(false);
   const { handleSetRoomTimer, room } = useRoom();
-  const { user } = useAuth();
-
-  const isAdmin = useMemo(
-    () => room?.adminId === user?.id,
-    [room?.adminId, user?.id]
-  );
+  const isAdmin = useIsAdmin();
 
   const minutes = Math.floor(time / 60);
   const seconds = time % 60;
@@ -142,7 +133,6 @@ export const TimerContextProvider = ({
         cyclesCount,
         time,
         timerOptions,
-        canEditTimer: isAdmin,
         setTimerOptions,
         resetTimer,
         setTime,
