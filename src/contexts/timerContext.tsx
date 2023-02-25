@@ -94,10 +94,6 @@ export const TimerContextProvider = ({
   );
 
   useEffect(() => {
-    if (isAdmin === undefined) {
-      return;
-    }
-  
     if (isAdmin) {
       if (isActive && time > 0) {
         TimeOut = setTimeout(() => {
@@ -106,11 +102,16 @@ export const TimerContextProvider = ({
       } else if (isActive && time == 0) {
         setPomodoroTimeAndMode(cyclesCount);
       }
-    } else if (room) {
+    }
+  }, [time, isActive, setPomodoroTimeAndMode, cyclesCount, isAdmin]);
+
+
+  useEffect(()=> {
+    if (room && !isAdmin ) {
       setTime(room.currentTimerValue as number);
       setMode(room.currentTimerMode as string);
     }
-  }, [time, isActive, setPomodoroTimeAndMode, cyclesCount, isAdmin, room]);
+  }, [isAdmin, room])
 
   useEffect(() => {
     mode !== Mode.POMODORO && setCyclesCount((state) => state + 1);
