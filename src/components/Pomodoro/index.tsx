@@ -5,9 +5,11 @@ import { TimerOptions } from "../TimerOptions";
 import { Progressbar } from "../ProgressBar";
 import { Mode } from "../../enums";
 import { toast } from "react-toastify";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 
 const Pomodoro = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
+  const isAdmin = useIsAdmin();
 
   const {
     minutes,
@@ -17,14 +19,13 @@ const Pomodoro = () => {
     isActive,
     mode,
     cyclesCount,
-    canEditTimer,
   } = useTimer();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
 
   const toggleTimer = () => {
-    isActive && canEditTimer ? resetTimer() : startTimer();
+    isActive && isAdmin ? resetTimer() : startTimer();
   };
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const Pomodoro = () => {
         </span>
       </div>
 
-      {!isActive && canEditTimer && (
+      {!isActive && isAdmin && (
         <button
           onClick={() => setOpenConfigModal(true)}
           className={styles.btnConfig}
@@ -72,7 +73,7 @@ const Pomodoro = () => {
       {isActive && <Progressbar value={(cyclesCount / 4) * 100} />}
 
       <button
-        disabled={!canEditTimer}
+        disabled={!isAdmin}
         onClick={toggleTimer}
         className={!isActive ? styles.btnStart : styles.btnStop}
       >
