@@ -26,7 +26,7 @@ interface IRoomContextProvider {
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
-  handleSetRoomTimer: (time: number, mode: string) => Promise<void>;
+  handleSetRoomTimer: (time: number, mode: string, isActive: boolean) => Promise<void>;
   handleSetRoomTimerOptions: (timerOptions: ITimerOptions) => Promise<void>;
 }
 
@@ -63,7 +63,8 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         longBreak: Time.LONGBREAK,
         shortBreak: Time.SHORTBREAK,
         currentTimerValue: Time.POMODORO,
-        currentTimerMode: Mode.POMODORO
+        currentTimerMode: Mode.POMODORO,
+        isActive: false
       });
       router.push(`/rooms/${roomRef.key}`);
     } catch (error) {
@@ -123,12 +124,13 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   };
 
   const handleSetRoomTimer = useCallback(
-    async (time: number, mode: string) => {
+    async (time: number, mode: string, isActive: boolean) => {
       const roomRef = ref(database, `rooms/${router.query.slug}`);
       room?.currentTimerMode && await set(roomRef, {
         ...room,
         currentTimerValue: time,
         currentTimerMode: mode,
+        isActive
       });
     },
     [room, router]
