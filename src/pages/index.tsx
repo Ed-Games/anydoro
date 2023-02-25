@@ -25,7 +25,8 @@ const Home: NextPage = () => {
     }
   };
 
-  const handleJoinRoom = (code: string) => {
+  const handleJoinRoom = async(code: string) => {
+    if (!user) await signInWithGoogle();
     Router.push(`/rooms/${code}`);
   };
 
