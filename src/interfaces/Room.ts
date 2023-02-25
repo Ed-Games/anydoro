@@ -1,6 +1,7 @@
 import { IUser } from "./User";
 
 export interface IRoom {
+  isActive: boolean;
   adminId: string;
   name: string;
   users: IUser[];
