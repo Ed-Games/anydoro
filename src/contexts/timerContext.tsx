@@ -108,6 +108,7 @@ export const TimerContextProvider = ({
 
   useEffect(()=> {
     if (room && !isAdmin ) {
+      setIsActive(room.isActive);
       setTime(room.currentTimerValue as number);
       setMode(room.currentTimerMode as string);
     }
@@ -124,8 +125,8 @@ export const TimerContextProvider = ({
   }, [isActive, resetTimer, timerOptions]);
 
   useEffect(() => {
-    isActive && handleSetRoomTimer(time, mode);
-  }, [handleSetRoomTimer, isActive, mode, time]);
+    isActive && isAdmin && handleSetRoomTimer(time, mode, isActive);
+  }, [handleSetRoomTimer, isActive, isAdmin, mode, time]);
 
   return (
     <TimerContext.Provider
