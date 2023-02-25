@@ -17,13 +17,14 @@ const Pomodoro = () => {
     isActive,
     mode,
     cyclesCount,
+    canEditTimer,
   } = useTimer();
 
   const [minuteLeft, minuteRight] = String(minutes).padStart(2, "0").split("");
   const [secondLeft, secondRight] = String(seconds).padStart(2, "0").split("");
 
   const toggleTimer = () => {
-    isActive ? resetTimer() : startTimer();
+    isActive && canEditTimer ? resetTimer() : startTimer();
   };
 
   useEffect(() => {
@@ -59,17 +60,19 @@ const Pomodoro = () => {
         </span>
       </div>
 
-      {!isActive ? (
+      {!isActive && canEditTimer && (
         <button
           onClick={() => setOpenConfigModal(true)}
           className={styles.btnConfig}
         >
           Configurar ciclo
         </button>
-      ) : (
-        <Progressbar value={(cyclesCount / 4) * 100} />
       )}
+
+      {isActive && <Progressbar value={(cyclesCount / 4) * 100} />}
+
       <button
+        disabled={!canEditTimer}
         onClick={toggleTimer}
         className={!isActive ? styles.btnStart : styles.btnStop}
       >
