@@ -1,6 +1,7 @@
 import { useRouter } from "next/router";
 import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { useRoom } from "../../hooks/useRoom";
+import { useTimer } from "../../hooks/useTimer";
 import { Modal } from "../Modal";
 import styles from "./styles.module.scss";
 
@@ -11,6 +12,7 @@ interface ICloseRoomProps {
 
 export const CloseRoom = ({ isVisible, setIsVisible }: ICloseRoomProps) => {
   const { handleCloseRoom } = useRoom();
+  const { resetTimer } = useTimer();
   const router = useRouter();
   const isAdmin = useIsAdmin();
 
@@ -20,6 +22,7 @@ export const CloseRoom = ({ isVisible, setIsVisible }: ICloseRoomProps) => {
 
   const handleClickConfirmButton = () => {
     isAdmin ? handleCloseRoom() : handleLeaveRoom();
+    resetTimer();
   };
   return (
     <Modal isVisible={isVisible} setIsModalVisible={setIsVisible}>
