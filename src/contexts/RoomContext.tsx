@@ -26,7 +26,11 @@ interface IRoomContextProvider {
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
-  handleSetRoomTimer: (time: number, mode: string, isActive: boolean) => Promise<void>;
+  handleSetRoomTimer: (
+    time: number,
+    mode: string,
+    isActive: boolean
+  ) => Promise<void>;
   handleSetRoomTimerOptions: (timerOptions: ITimerOptions) => Promise<void>;
 }
 
@@ -48,7 +52,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         shortBreak: Time.SHORTBREAK,
       };
 
-      return  JSON.stringify(timerOptions);
+      return JSON.stringify(timerOptions);
     }
   }, [roomTimerOptions]);
 
@@ -64,7 +68,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         shortBreak: Time.SHORTBREAK,
         currentTimerValue: Time.POMODORO,
         currentTimerMode: Mode.POMODORO,
-        isActive: false
+        isActive: false,
       });
       router.push(`/rooms/${roomRef.key}`);
     } catch (error) {
@@ -78,10 +82,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
       onValue(roomRef, async (snapshot) => {
         const localRoom: IRoom = snapshot.val();
         if (localRoom) {
-          if (localRoom.endedAt) {
-            toast.warn("Essa sala foi encerrada.");
-            router.push("/");
-          }
+          if (localRoom.endedAt) return;
 
           const usersInRoom = localRoom.users
             ? Array.from(localRoom.users)
@@ -126,12 +127,16 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const handleSetRoomTimer = useCallback(
     async (time: number, mode: string, isActive: boolean) => {
       const roomRef = ref(database, `rooms/${router.query.slug}`);
-      room?.currentTimerMode && await set(roomRef, {
-        ...room,
-        currentTimerValue: time,
-        currentTimerMode: mode,
-        isActive
-      });
+      if (room?.endedAt) {
+        return;
+      }
+      room?.currentTimerMode &&
+        (await set(roomRef, {
+          ...room,
+          currentTimerValue: time,
+          currentTimerMode: mode,
+          isActive,
+        }));
     },
     [room, router]
   );
@@ -140,7 +145,6 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     const roomRef = ref(database, `rooms/${router.query.slug}`);
     await set(roomRef, { ...room, ...timerOptions });
   };
-
 
   return (
     <RoomContext.Provider
