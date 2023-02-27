@@ -10,12 +10,13 @@ import { useRoom } from "../../hooks/useRoom";
 import { BottomTabNavigator } from "../../components/BottomTabNavigator";
 import { useTimer } from "../../hooks/useTimer";
 import { Loader } from "../../components/Loader/indext";
+import { toast } from "react-toastify";
 
 const Room: NextPage = () => {
   const { user } = useAuth();
   const { setTimerOptions } = useTimer();
   const router = useRouter();
-  const { hasRoomLoaded, timerOptions, handleLoadRoomAndAddUser } =
+  const { room, hasRoomLoaded, timerOptions, handleLoadRoomAndAddUser } =
     useRoom();
 
   useEffect(() => {
@@ -33,6 +34,13 @@ const Room: NextPage = () => {
   useEffect(()=> {
     setTimerOptions(JSON.parse(timerOptions))
   }, [setTimerOptions, timerOptions])
+
+  useEffect(()=> {
+    if(room && room.endedAt){
+      toast.warning('Essa sala foi encerrada');
+      router.push('/');
+    }
+  }, [room, router])
 
 
   return (
