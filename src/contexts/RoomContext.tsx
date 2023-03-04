@@ -4,6 +4,7 @@ import {
   createContext,
   ReactNode,
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -49,7 +50,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     if (roomTimerOptions) {
       return JSON.stringify(roomTimerOptions);
     } else {
-     return;
+      return;
     }
   }, [roomTimerOptions]);
 
@@ -81,7 +82,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         if (localRoom) {
           if (localRoom.endedAt) {
             setHasRoomClosed(true);
-            router.push('/');
+            router.push("/");
           }
 
           const usersInRoom = localRoom.users
@@ -108,10 +109,10 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
             pomodoro: localRoom.pomodoro,
             shortBreak: localRoom.shortBreak,
           });
-        }
 
-        setRoom(localRoom);
-        setHasRoomLoaded(true);
+          setRoom(localRoom);
+          setHasRoomLoaded(true);
+        }
       });
     },
     [router]
@@ -120,8 +121,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const handleCloseRoom = async () => {
     const roomRef = ref(database, `rooms/${router.query.slug}`);
     await set(roomRef, { ...room, endedAt: Date.now() });
-    setRoom(undefined);
-    router.push("/");
+    setHasRoomClosed(true);
   };
 
   const handleSetRoomTimer = useCallback(
@@ -145,6 +145,15 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     const roomRef = ref(database, `rooms/${router.query.slug}`);
     await set(roomRef, { ...room, ...timerOptions });
   };
+
+  useEffect(()=> {
+   if(hasRoomClosed) {
+    setRoom(undefined);
+    setHasRoomLoaded(false);
+    setHasRoomClosed(false);
+    setRoomTimerOptions(undefined);
+   }
+  }, [hasRoomClosed])
 
   return (
     <RoomContext.Provider
