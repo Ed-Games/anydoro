@@ -32,7 +32,7 @@ const Room: NextPage = () => {
 
 
   useEffect(()=> {
-    setTimerOptions(JSON.parse(timerOptions))
+    timerOptions && setTimerOptions(JSON.parse(timerOptions))
   }, [setTimerOptions, timerOptions])
 
   useEffect(()=> {
