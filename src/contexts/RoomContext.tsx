@@ -23,6 +23,8 @@ interface IRoomContextProvider {
   timerOptions: string;
   room: IRoom | undefined;
   hasRoomLoaded: boolean;
+  hasRoomClosed: boolean;
+  setHasRoomClosed: (arg: boolean) => void;
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
@@ -39,6 +41,7 @@ export const RoomContext = createContext({} as IRoomContextProvider);
 export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const [room, setRoom] = useState<IRoom>();
   const [hasRoomLoaded, setHasRoomLoaded] = useState<boolean>(false);
+  const [hasRoomClosed, setHasRoomClosed] = useState<boolean>(false);
   const [roomTimerOptions, setRoomTimerOptions] = useState<ITimerOptions>();
   const router = useRouter();
 
@@ -82,7 +85,9 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
       onValue(roomRef, async (snapshot) => {
         const localRoom: IRoom = snapshot.val();
         if (localRoom) {
-          if (localRoom.endedAt) return;
+          if (localRoom.endedAt) {
+            setHasRoomClosed(true);
+          }
 
           const usersInRoom = localRoom.users
             ? Array.from(localRoom.users)
@@ -151,7 +156,9 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
       value={{
         room,
         hasRoomLoaded,
+        hasRoomClosed,
         timerOptions,
+        setHasRoomClosed,
         handleCreateRoom,
         handleLoadRoomAndAddUser,
         handleCloseRoom,
