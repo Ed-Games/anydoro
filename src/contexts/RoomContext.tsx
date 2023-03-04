@@ -87,6 +87,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         if (localRoom) {
           if (localRoom.endedAt) {
             setHasRoomClosed(true);
+            router.push('/');
           }
 
           const usersInRoom = localRoom.users
