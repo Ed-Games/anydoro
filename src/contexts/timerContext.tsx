@@ -18,7 +18,7 @@ interface ITimerContextProps {
   cyclesCount: number;
   time: number;
   timerOptions?: ITimerOptions;
-  setTimerOptions: (timerOptions: ITimerOptions) => void;
+  setTimerOptions: (timerOptions: ITimerOptions | undefined) => void;
   setTime: (number: number) => void;
   startTimer: () => void;
   resetTimer: () => void;
