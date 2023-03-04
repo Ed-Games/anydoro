@@ -20,7 +20,7 @@ interface IRoomContextProps {
 }
 
 interface IRoomContextProvider {
-  timerOptions: string;
+  timerOptions: string | undefined;
   room: IRoom | undefined;
   hasRoomLoaded: boolean;
   hasRoomClosed: boolean;
@@ -49,13 +49,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     if (roomTimerOptions) {
       return JSON.stringify(roomTimerOptions);
     } else {
-      const timerOptions: ITimerOptions = {
-        longBreak: Time.LONGBREAK,
-        pomodoro: Time.POMODORO,
-        shortBreak: Time.SHORTBREAK,
-      };
-
-      return JSON.stringify(timerOptions);
+     return;
     }
   }, [roomTimerOptions]);
 
