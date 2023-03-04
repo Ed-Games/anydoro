@@ -16,7 +16,7 @@ const Room: NextPage = () => {
   const { user } = useAuth();
   const { setTimerOptions } = useTimer();
   const router = useRouter();
-  const { room, hasRoomLoaded, timerOptions, handleLoadRoomAndAddUser } =
+  const { hasRoomLoaded, setHasRoomClosed, hasRoomClosed , timerOptions, handleLoadRoomAndAddUser } =
     useRoom();
 
   useEffect(() => {
@@ -36,11 +36,12 @@ const Room: NextPage = () => {
   }, [setTimerOptions, timerOptions])
 
   useEffect(()=> {
-    if(room && room.endedAt){
+    if(hasRoomClosed){
       toast.warning('Essa sala foi encerrada');
+      setHasRoomClosed(false);
       router.push('/');
     }
-  }, [room, router])
+  }, [hasRoomClosed, router, setHasRoomClosed])
 
 
   return (
