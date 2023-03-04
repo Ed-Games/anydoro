@@ -39,8 +39,9 @@ const Room: NextPage = () => {
     if(hasRoomClosed){
       toast.warning('Essa sala foi encerrada');
       setHasRoomClosed(false);
+      setTimerOptions(undefined);
     }
-  }, [hasRoomClosed, router, setHasRoomClosed])
+  }, [hasRoomClosed, router, setHasRoomClosed, setTimerOptions])
 
 
   return (
