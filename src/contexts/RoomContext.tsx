@@ -112,6 +112,9 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
 
           setRoom(localRoom);
           setHasRoomLoaded(true);
+        } else {
+          router.push('/');
+          toast.error('Sala não encontrada');
         }
       });
     },
