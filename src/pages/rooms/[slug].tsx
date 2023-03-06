@@ -41,7 +41,7 @@ const Room: NextPage = () => {
       setHasRoomClosed(false);
       setTimerOptions(undefined);
     }
-  }, [hasRoomClosed, router, setHasRoomClosed, setTimerOptions])
+  }, [hasRoomClosed, setHasRoomClosed, setTimerOptions])
 
 
   return (
