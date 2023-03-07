@@ -9,3 +9,9 @@ export enum Time {
   SHORTBREAK=5 * 60,
   LONGBREAK= 15 * 60
 }
+
+export enum NotificationType {
+  WARNING,
+  SUCCESS,
+  ERROR,
+}
