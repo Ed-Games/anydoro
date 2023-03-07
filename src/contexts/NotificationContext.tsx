@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useCallback, useEffect, useState } from "react";
 import { toast, ToastContainer, ToastOptions } from "react-toastify";
 import { NotificationType } from "../enums";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IProps {
   children: ReactNode;
