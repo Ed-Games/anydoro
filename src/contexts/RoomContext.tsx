@@ -8,13 +8,13 @@ import {
   useMemo,
   useState,
 } from "react";
-import { toast } from "react-toastify";
 import { IRoom } from "../interfaces/Room";
 import { IUser } from "../interfaces/User";
 import { database } from "../services/firebase";
 import { uuidv4 } from "@firebase/util";
-import { Mode, Time } from "../enums";
+import { Mode, NotificationType, Time } from "../enums";
 import { ITimerOptions } from "../interfaces/timerOptions";
+import { useNotification } from "../hooks/useNotification";
 
 interface IRoomContextProps {
   children: ReactNode;
@@ -45,6 +45,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const [hasRoomClosed, setHasRoomClosed] = useState<boolean>(false);
   const [roomTimerOptions, setRoomTimerOptions] = useState<ITimerOptions>();
   const router = useRouter();
+  const { handleCreateNotification } = useNotification();
 
   const timerOptions = useMemo(() => {
     if (roomTimerOptions) {
@@ -70,7 +71,10 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
       });
       router.push(`/rooms/${roomRef.key}`);
     } catch (error) {
-      toast.error("Houve um erro ao tentar criar a sala.");
+      handleCreateNotification({
+        message: "Houve um erro ao tentar criar a sala.",
+        type: NotificationType.ERROR,
+      });
     }
   };
 
@@ -113,12 +117,15 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
           setRoom(localRoom);
           setHasRoomLoaded(true);
         } else {
-          router.push('/');
-          toast.error('Sala não encontrada');
+          router.push("/");
+          handleCreateNotification({
+            message: "Sala não encontrada",
+            type: NotificationType.ERROR,
+          });
         }
       });
     },
-    [router]
+    [handleCreateNotification, router]
   );
 
   const handleCloseRoom = async () => {
@@ -149,14 +156,14 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     await set(roomRef, { ...room, ...timerOptions });
   };
 
-  useEffect(()=> {
-   if(hasRoomClosed) {
-    setRoom(undefined);
-    setHasRoomLoaded(false);
-    setHasRoomClosed(false);
-    setRoomTimerOptions(undefined);
-   }
-  }, [hasRoomClosed])
+  useEffect(() => {
+    if (hasRoomClosed) {
+      setRoom(undefined);
+      setHasRoomLoaded(false);
+      setHasRoomClosed(false);
+      setRoomTimerOptions(undefined);
+    }
+  }, [hasRoomClosed]);
 
   return (
     <RoomContext.Provider

@@ -3,13 +3,14 @@ import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
 import { TimerOptions } from "../TimerOptions";
 import { Progressbar } from "../ProgressBar";
-import { Mode } from "../../enums";
-import { toast } from "react-toastify";
+import { Mode, NotificationType } from "../../enums";
 import { useIsAdmin } from "../../hooks/useIsAdmin";
+import { useNotification } from "../../hooks/useNotification";
 
 const Pomodoro = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
   const isAdmin = useIsAdmin();
+  const { handleCreateNotification } = useNotification();
 
   const {
     minutes,
@@ -30,12 +31,14 @@ const Pomodoro = () => {
 
   useEffect(() => {
     if (mode === Mode.LONGBREAK) {
-      toast.success(
-        "Parabens! Você completou um ciclo. Que tal uma pausa para o café?",
-        { pauseOnFocusLoss: false }
-      );
+      handleCreateNotification({
+        message:
+          "Parabens! Você completou um ciclo. Que tal uma pausa para o café?",
+        type: NotificationType.SUCCESS,
+        opts: { pauseOnFocusLoss: false },
+      });
     }
-  }, [mode]);
+  }, [handleCreateNotification, mode]);
 
   return (
     <div className={styles.pomodoro}>
