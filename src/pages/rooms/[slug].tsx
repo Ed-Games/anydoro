@@ -10,14 +10,21 @@ import { useRoom } from "../../hooks/useRoom";
 import { BottomTabNavigator } from "../../components/BottomTabNavigator";
 import { useTimer } from "../../hooks/useTimer";
 import { Loader } from "../../components/Loader/indext";
-import { toast } from "react-toastify";
+import { useNotification } from "../../hooks/useNotification";
+import { NotificationType } from "../../enums";
 
 const Room: NextPage = () => {
   const { user } = useAuth();
   const { setTimerOptions } = useTimer();
   const router = useRouter();
-  const { hasRoomLoaded, setHasRoomClosed, hasRoomClosed , timerOptions, handleLoadRoomAndAddUser } =
-    useRoom();
+  const { handleCreateNotification } = useNotification();
+  const {
+    hasRoomLoaded,
+    setHasRoomClosed,
+    hasRoomClosed,
+    timerOptions,
+    handleLoadRoomAndAddUser,
+  } = useRoom();
 
   useEffect(() => {
     if (user === undefined) return;
@@ -30,19 +37,25 @@ const Room: NextPage = () => {
     }
   }, [handleLoadRoomAndAddUser, router, user]);
 
+  useEffect(() => {
+    timerOptions && setTimerOptions(JSON.parse(timerOptions));
+  }, [setTimerOptions, timerOptions]);
 
-  useEffect(()=> {
-    timerOptions && setTimerOptions(JSON.parse(timerOptions))
-  }, [setTimerOptions, timerOptions])
-
-  useEffect(()=> {
-    if(hasRoomClosed){
-      toast.warning('Essa sala foi encerrada');
+  useEffect(() => {
+    if (hasRoomClosed) {
+      handleCreateNotification({
+        message: "Essa sala foi encerrada",
+        type: NotificationType.WARNING,
+      });
       setHasRoomClosed(false);
       setTimerOptions(undefined);
     }
-  }, [hasRoomClosed, setHasRoomClosed, setTimerOptions])
-
+  }, [
+    handleCreateNotification,
+    hasRoomClosed,
+    setHasRoomClosed,
+    setTimerOptions,
+  ]);
 
   return (
     <div id="room" className="container">
@@ -52,7 +65,7 @@ const Room: NextPage = () => {
       <Header />
       <Pomodoro />
       <BottomTabNavigator />
-      { !hasRoomLoaded && <Loader /> }
+      {!hasRoomLoaded && <Loader />}
     </div>
   );
 };
