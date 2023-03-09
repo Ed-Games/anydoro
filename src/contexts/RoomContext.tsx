@@ -76,87 +76,95 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
 
   const handleLoadRoomAndAddUser = useCallback(
     (user: IUser) => {
-      const roomRef = ref(database, `rooms/${router.query.slug}`);
-      onValue(roomRef, async (snapshot) => {
-        const localRoom: IRoom = snapshot.val();
-        if (localRoom) {
-          if (localRoom.endedAt) {
-            setHasRoomClosed(true);
-            router.push("/");
-          }
+      if (router.query.slug) {
+        const roomRef = ref(database, `rooms/${router.query.slug}`);
+        onValue(roomRef, async (snapshot) => {
+          const localRoom: IRoom = snapshot.val();
+          if (localRoom) {
+            if (localRoom.endedAt) {
+              setHasRoomClosed(true);
+              router.push("/");
+            }
 
-          const usersInRoom = localRoom.users
-            ? Array.from(localRoom.users)
-            : new Array<IUser>();
+            const usersInRoom = localRoom.users
+              ? Array.from(localRoom.users)
+              : new Array<IUser>();
 
-          const alreadyexists = usersInRoom.find(
-            (userInRoom) => userInRoom.id === user!.id
-          );
-
-          if (!alreadyexists) {
-            const userRef = ref(
-              database,
-              `rooms/${router.query.slug}/users/${user!.id}`
+            const alreadyexists = usersInRoom.find(
+              (userInRoom) => userInRoom.id === user!.id
             );
-            await set(userRef, {
-              ...user,
-              isAdmin: localRoom.adminId === user!.id,
+
+            if (!alreadyexists) {
+              const userRef = ref(
+                database,
+                `rooms/${router.query.slug}/users/${user!.id}`
+              );
+              await set(userRef, {
+                ...user,
+                isAdmin: localRoom.adminId === user!.id,
+              });
+            }
+
+            setRoomTimerOptions({
+              longBreak: localRoom.longBreak,
+              pomodoro: localRoom.pomodoro,
+              shortBreak: localRoom.shortBreak,
             });
+
+            setRoom(localRoom);
+            setHasRoomLoaded(true);
+          } else {
+            router.push("/");
+            toast.error("Sala não encontrada");
           }
-
-          setRoomTimerOptions({
-            longBreak: localRoom.longBreak,
-            pomodoro: localRoom.pomodoro,
-            shortBreak: localRoom.shortBreak,
-          });
-
-          setRoom(localRoom);
-          setHasRoomLoaded(true);
-        } else {
-          router.push('/');
-          toast.error('Sala não encontrada');
-        }
-      });
+        });
+      }
     },
     [router]
   );
 
   const handleCloseRoom = async () => {
-    const roomRef = ref(database, `rooms/${router.query.slug}`);
-    await set(roomRef, { ...room, endedAt: Date.now() });
-    setHasRoomClosed(true);
+    if (router.query.slug) {
+      const roomRef = ref(database, `rooms/${router.query.slug}`);
+      await set(roomRef, { ...room, endedAt: Date.now() });
+      setHasRoomClosed(true);
+    }
   };
 
   const handleSetRoomTimer = useCallback(
     async (time: number, mode: string, isActive: boolean) => {
-      const roomRef = ref(database, `rooms/${router.query.slug}`);
-      if (room?.endedAt) {
-        return;
+      if (router.query.slug) {
+        const roomRef = ref(database, `rooms/${router.query.slug}`);
+        if (room?.endedAt) {
+          return;
+        }
+        room?.currentTimerMode &&
+          (await set(roomRef, {
+            ...room,
+            currentTimerValue: time,
+            currentTimerMode: mode,
+            isActive,
+          }));
       }
-      room?.currentTimerMode &&
-        (await set(roomRef, {
-          ...room,
-          currentTimerValue: time,
-          currentTimerMode: mode,
-          isActive,
-        }));
     },
     [room, router]
   );
 
   const handleSetRoomTimerOptions = async (timerOptions: ITimerOptions) => {
-    const roomRef = ref(database, `rooms/${router.query.slug}`);
-    await set(roomRef, { ...room, ...timerOptions });
+    if (router.query.slug) {
+      const roomRef = ref(database, `rooms/${router.query.slug}`);
+      await set(roomRef, { ...room, ...timerOptions });
+    }
   };
 
-  useEffect(()=> {
-   if(hasRoomClosed) {
-    setRoom(undefined);
-    setHasRoomLoaded(false);
-    setHasRoomClosed(false);
-    setRoomTimerOptions(undefined);
-   }
-  }, [hasRoomClosed])
+  useEffect(() => {
+    if (hasRoomClosed) {
+      setRoom(undefined);
+      setHasRoomLoaded(false);
+      setHasRoomClosed(false);
+      setRoomTimerOptions(undefined);
+    }
+  }, [hasRoomClosed]);
 
   return (
     <RoomContext.Provider
