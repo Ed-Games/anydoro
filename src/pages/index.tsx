@@ -6,28 +6,32 @@ import Head from "next/head";
 import Router from "next/router";
 import { MouseEvent } from "react";
 import { Formik } from "formik";
-import { FaGoogle } from "react-icons/fa";
 import { Presentation } from "../components/presentation";
 import { useAuth } from "../hooks/useAuth";
 import { codeSchema } from "../validators/roomCodeSchema";
 
 const Home: NextPage = () => {
-  const { signInWithGoogle, user } = useAuth();
+  const { user } = useAuth();
 
   const handleCreateNewRoom = async (
     e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
   ) => {
     e.preventDefault();
     try {
-      if (!user) await signInWithGoogle();
-      Router.push("/rooms/new");
+      if (!user) {
+        Router.push("/login?redirect_to=/rooms/new");
+      } else {
+        Router.push("/rooms/new");
+      }
     } catch (error) {
       return;
     }
   };
 
   const handleJoinRoom = async (code: string) => {
-    if (!user) await signInWithGoogle();
+    if (!user) {
+      Router.push(`/login?redirect_to=/rooms/${code}`);
+    }
     Router.push(`/rooms/${code}`);
   };
 
@@ -46,11 +50,9 @@ const Home: NextPage = () => {
         <button
           type="button"
           title="Criar nova sala"
-          className={styles.googleButton}
           onClick={handleCreateNewRoom}
         >
-          <FaGoogle size={24} />
-          crie sua sala com o Google
+          Criar sua sala
         </button>
 
         <div className={styles.divider}>
@@ -66,7 +68,7 @@ const Home: NextPage = () => {
           {({ handleChange, handleSubmit, errors, touched }) => (
             <form onSubmit={handleSubmit}>
               <input
-                placeholder="Digitar código da sala..."
+                placeholder="Digitar código..."
                 name="code"
                 onChange={handleChange}
               />
