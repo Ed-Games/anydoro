@@ -35,7 +35,6 @@ export const AuthContextProvider = ({
   const signInWithGithub = async () => {
     const provider = new GithubAuthProvider();
     const result: any = await signInWithPopup(auth, provider);
-    console.log(result.user);
     handleValidateAndSetUser(result.user);
   };
 
