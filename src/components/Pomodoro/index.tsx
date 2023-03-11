@@ -30,21 +30,26 @@ const Pomodoro = () => {
   };
 
   useEffect(() => {
-    if (mode === Mode.LONGBREAK) {
-      toast.success(
-        "Parabens! Você completou um ciclo. Que tal uma pausa para o café?",
-        { pauseOnFocusLoss: false }
-      );
-    }
-
-    if (mode === Mode.SHORTBREAK) {
-      toast.success("Hora de fazer uma pequena pausa", {
-        pauseOnFocusLoss: false,
-      });
-    }
-
-    if (mode === Mode.POMODORO && isActive) {
-      toast.success("Hora de focar!!", { pauseOnFocusLoss: false });
+    switch (mode) {
+      case Mode.LONGBREAK:
+        toast.success(
+          "Parabens! Você completou um ciclo. Que tal uma pausa para o café?",
+          { pauseOnFocusLoss: false }
+        );
+        break;
+      case Mode.SHORTBREAK:
+        toast.success("Hora de fazer uma pequena pausa", {
+          pauseOnFocusLoss: false,
+        });
+        break;
+      case Mode.POMODORO:
+        if (isActive) {
+          toast.success("Hora de focar!!", { pauseOnFocusLoss: false });
+        }
+        break;
+      default:
+        // handle default case here
+        break;
     }
   }, [mode, isActive]);
 
