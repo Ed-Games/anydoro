@@ -2,7 +2,6 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Header from "../../components/Header";
 import Pomodoro from "../../components/Pomodoro";
-import "react-toastify/dist/ReactToastify.css";
 import { useEffect } from "react";
 import { useRouter } from "next/router";
 import { useAuth } from "../../hooks/useAuth";
