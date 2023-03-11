@@ -38,28 +38,23 @@ const Pomodoro = () => {
     }
 
     if (mode === Mode.SHORTBREAK) {
-      toast.success(
-        "Hora de fazer uma pequena pausa",
-        { pauseOnFocusLoss: false }
-      );
+      toast.success("Hora de fazer uma pequena pausa", {
+        pauseOnFocusLoss: false,
+      });
     }
 
     if (mode === Mode.POMODORO && isActive) {
-      toast.success(
-        "Hora de focar!!",
-        { pauseOnFocusLoss: false }
-      );
+      toast.success("Hora de focar!!", { pauseOnFocusLoss: false });
     }
-
   }, [mode, isActive]);
 
-  useEffect(()=> {
-    if(cyclesCount < 1 && mode === Mode.POMODORO) {
-      return
+  useEffect(() => {
+    if (cyclesCount < 1 && mode === Mode.POMODORO) {
+      return;
     } else {
       audioRef.current?.play();
     }
-  }, [cyclesCount, mode])
+  }, [cyclesCount, mode]);
 
   return (
     <div className={styles.pomodoro}>
