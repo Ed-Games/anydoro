@@ -35,10 +35,31 @@ const Pomodoro = () => {
         "Parabens! Você completou um ciclo. Que tal uma pausa para o café?",
         { pauseOnFocusLoss: false }
       );
+    }
 
+    if (mode === Mode.SHORTBREAK) {
+      toast.success(
+        "Hora de fazer uma pequena pausa",
+        { pauseOnFocusLoss: false }
+      );
+    }
+
+    if (mode === Mode.POMODORO && isActive) {
+      toast.success(
+        "Hora de focar!!",
+        { pauseOnFocusLoss: false }
+      );
+    }
+
+  }, [mode, isActive]);
+
+  useEffect(()=> {
+    if(cyclesCount < 1 && mode === Mode.POMODORO) {
+      return
+    } else {
       audioRef.current?.play();
     }
-  }, [mode]);
+  }, [cyclesCount, mode])
 
   return (
     <div className={styles.pomodoro}>
@@ -86,7 +107,7 @@ const Pomodoro = () => {
         isVisible={openConfigModal}
         setIsVisible={setOpenConfigModal}
       />
-      <audio  ref={audioRef as any} src="/notification-sound.mp3" />
+      <audio ref={audioRef as any} src="/notification-sound.mp3" />
     </div>
   );
 };
