@@ -8,42 +8,37 @@ import { FaGithub, FaGoogle } from "react-icons/fa";
 import { useAuth } from "../../hooks/useAuth";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const Login: NextPage = () => {
   const { signInWithGoogle, signInWithGithub, user } = useAuth();
   const router = useRouter();
 
-  const handleSignIn = async(type: "google" | "github") => {
+  const handleSignIn = async (type: "google" | "github") => {
     if (type == "google") {
-      await signInWithGoogle();
+      try {
+        await signInWithGoogle();
+      } catch (error) {
+        toast.error("Houve um erro ao fazer login. Tente novamente");
+      }
     } else {
-      await signInWithGithub()
-    }
-
-    /** IF USER  */
-
-    /**
-     * if(parameter from home) {
-     *    if(creating) {
-     *      router.push('/room/new') 
-     *    } else {
-     *      router.push('/room/${code}')  
-     *    }
-     * } else {
-     *    router.push("/")
-     *  }
-     */
-  };
-
-  useEffect(()=> {
-    if(user){
-      if(router.query.redirect_to){
-        router.push(router.query.redirect_to as string)
-      } else {
-        router.push("/")
+      try {
+        await signInWithGithub();
+      } catch (error) {
+        toast.error("Houve um erro ao fazer login. Tente novamente");
       }
     }
-  }, [router, user])
+  };
+
+  useEffect(() => {
+    if (user) {
+      if (router.query.redirect_to) {
+        router.push(router.query.redirect_to as string);
+      } else {
+        router.push("/");
+      }
+    }
+  }, [router, user]);
 
   return (
     <div className={styles.container}>
@@ -53,7 +48,7 @@ const Login: NextPage = () => {
           <Image src={logo} alt="anydoro-logo" />
         </div>
         <span>Bem vindo. Faça login para continuar</span>
-        <button onClick={ () => handleSignIn('google')} >
+        <button onClick={() => handleSignIn("google")}>
           <FaGoogle />
           Fazer login com o Google
         </button>
@@ -64,7 +59,7 @@ const Login: NextPage = () => {
           <div className={styles.line} />
         </div>
 
-        <button onClick={ () => handleSignIn("github")}>
+        <button onClick={() => handleSignIn("github")}>
           <FaGithub />
           Fazer login com o Github
         </button>
