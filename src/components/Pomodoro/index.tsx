@@ -10,7 +10,8 @@ import { useIsAdmin } from "../../hooks/useIsAdmin";
 const Pomodoro = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
   const isAdmin = useIsAdmin();
-  const audioRef = useRef<HTMLAudioElement>();
+  const notificationAudioRef = useRef<HTMLAudioElement>();
+  const startAudioRef = useRef<HTMLAudioElement>();
 
   const {
     minutes,
@@ -27,6 +28,7 @@ const Pomodoro = () => {
 
   const toggleTimer = () => {
     isActive && isAdmin ? resetTimer() : startTimer();
+    !isActive && startAudioRef.current?.play();
   };
 
   useEffect(() => {
@@ -57,7 +59,7 @@ const Pomodoro = () => {
     if (cyclesCount < 1 && mode === Mode.POMODORO) {
       return;
     } else {
-      audioRef.current?.play();
+      notificationAudioRef.current?.play();
     }
   }, [cyclesCount, mode]);
 
@@ -107,7 +109,8 @@ const Pomodoro = () => {
         isVisible={openConfigModal}
         setIsVisible={setOpenConfigModal}
       />
-      <audio ref={audioRef as any} src="/notification-sound.mp3" />
+      <audio ref={notificationAudioRef as any} src="/notification-sound.mp3" />
+      <audio ref={startAudioRef as any} src="/start-sound.mp3" />
     </div>
   );
 };
