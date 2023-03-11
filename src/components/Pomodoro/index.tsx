@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTimer } from "../../hooks/useTimer";
 import styles from "./styles.module.scss";
 import { TimerOptions } from "../TimerOptions";
@@ -10,6 +10,7 @@ import { useIsAdmin } from "../../hooks/useIsAdmin";
 const Pomodoro = () => {
   const [openConfigModal, setOpenConfigModal] = useState<boolean>(false);
   const isAdmin = useIsAdmin();
+  const audioRef = useRef<HTMLAudioElement>();
 
   const {
     minutes,
@@ -34,6 +35,8 @@ const Pomodoro = () => {
         "Parabens! Você completou um ciclo. Que tal uma pausa para o café?",
         { pauseOnFocusLoss: false }
       );
+
+      audioRef.current?.play();
     }
   }, [mode]);
 
@@ -83,6 +86,7 @@ const Pomodoro = () => {
         isVisible={openConfigModal}
         setIsVisible={setOpenConfigModal}
       />
+      <audio  ref={audioRef as any} src="/notification-sound.mp3" />
     </div>
   );
 };
