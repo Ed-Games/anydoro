@@ -31,8 +31,10 @@ const Home: NextPage = () => {
   const handleJoinRoom = async (code: string) => {
     if (!user) {
       Router.push(`/login?redirect_to=/rooms/${code}`);
+    } else {
+      Router.push(`/rooms/${code}`);
     }
-    Router.push(`/rooms/${code}`);
+    
   };
 
   return (
