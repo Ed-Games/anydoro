@@ -1,13 +1,15 @@
 {
   "name": "anydoro",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
+  "author": "Ed-Games",
+  "license": "MIT",
   "dependencies": {
     "firebase": "^9.16.0",
     "formik": "^2.2.9",
