@@ -100,7 +100,7 @@ ou yarn:
 yarn dev
 ```
 
-Depois disso acesso http://localhost:3000 e você verá a tela inicial do Anydoro.
+Depois disso acesse http://localhost:3000 e você verá a tela inicial do Anydoro.
 
 ## :memo: Licença
 
