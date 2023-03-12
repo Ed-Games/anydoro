@@ -22,7 +22,20 @@
   <a href="#calendar-sobre">Sobre</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;
   <a href="#computer-como-executar-o-projeto">Como executar</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;  
   <a href="#memo-licença">Licença</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
+  <a href="https://www.figma.com/file/Z8BwxeiZztJozJ05YW6IQs/Anydoro?node-id=0%3A1&t=MokNqTNfSnaZynrU-1">Figma</a>&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp; 
 </p>
+
+<br/>
+
+<img src="./imgs/timer.png" >
+<span> Tela do pomodoro </span>
+
+<br/>
+
+<img src="./imgs/home.png" >
+<span> Tela inicial </span>
+
+<br/>
 
 ## :calendar: Sobre
 
