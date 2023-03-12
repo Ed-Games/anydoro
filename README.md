@@ -27,13 +27,17 @@
 
 <br/>
 
-<img src="./imgs/timer.png" >
-<span> Tela do pomodoro </span>
+<div>
+  <img src="./imgs/timer.png" >
+  <span> Tela do pomodoro </span>
+</div>
 
 <br/>
 
-<img src="./imgs/home.png" >
-<span> Tela inicial </span>
+<div>
+  <img src="./imgs/home.png" >
+  <span> Tela inicial </span>
+</div>
 
 <br/>
 
@@ -51,7 +55,6 @@ Além disso, quando se usa o pomodoro sozinho, é muito mais fácil burlar o tem
 
 Se tem dúvida dos benefícios do pomodoro em grupo, consulte esse [link](https://www.ufrgs.br/jornal/pos-graduandos-criam-grupo-online-para-seguir-o-metodo-de-estudo-pomodoro/).
 
-
 ## :computer: Como executar o projeto
 
 Este projeto foi desenvolvido inteiramente utilizando-se do framework [Nextjs](https://nextjs.org/) e o serviço de Backend-as-a-service (Baas) [Firebase](https://firebase.google.com/).
@@ -61,9 +64,10 @@ Para te-lo funcionando em sua maquina, faça o clone ou fork desse repositório 
 ```sh
 npm install
 ```
+
 ou, para quem usa yarn:
 
-```sh 
+```sh
 yarn
 ```
 
@@ -72,14 +76,14 @@ Depois disso você precisará de um projeto web funcionando no firebase para ser
 Com o projeto criado. Crie um arquivo .env.local dessa forma e substitua os valores com suas credenciais.
 
 ```ts
-NEXT_PUBLIC_API_KEY="Valor da sua credencial"
-NEXT_PUBLIC_AUTH_DOMAIN="Valor da sua credencial"
-NEXT_PUBLIC_PROJECT_ID="Valor da sua credencial"
-NEXT_PUBLIC_STORAGE_BUCKET="Valor da sua credencial"
-NEXT_PUBLIC_MESSAGING_SENDER_ID="Valor da sua credencial"
-NEXT_PUBLIC_APP_ID="Valor da sua credencial"
-NEXT_PUBLIC_MEASUREMENT_ID="Valor da sua credencial"
-NEXT_PUBLIC_DATABASE_URL="Valor da sua credencial"
+NEXT_PUBLIC_API_KEY = "Valor da sua credencial";
+NEXT_PUBLIC_AUTH_DOMAIN = "Valor da sua credencial";
+NEXT_PUBLIC_PROJECT_ID = "Valor da sua credencial";
+NEXT_PUBLIC_STORAGE_BUCKET = "Valor da sua credencial";
+NEXT_PUBLIC_MESSAGING_SENDER_ID = "Valor da sua credencial";
+NEXT_PUBLIC_APP_ID = "Valor da sua credencial";
+NEXT_PUBLIC_MEASUREMENT_ID = "Valor da sua credencial";
+NEXT_PUBLIC_DATABASE_URL = "Valor da sua credencial";
 ```
 
 Pronto. Seu projeto está pronto para ser executado. Para isso, utilize um dos comandos abaixo.
@@ -89,11 +93,13 @@ npm:
 ```sh
 npm run dev
 ```
+
 ou yarn:
 
 ```sh
 yarn dev
 ```
+
 Depois disso acesso http://localhost:3000 e você verá a tela inicial do Anydoro.
 
 ## :memo: Licença
