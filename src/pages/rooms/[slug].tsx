@@ -10,14 +10,21 @@ import { BottomTabNavigator } from "../../components/BottomTabNavigator";
 import { useTimer } from "../../hooks/useTimer";
 import { Loader } from "../../components/Loader/indext";
 import { toast } from "react-toastify";
-import styles from './styles.module.scss';
+import { Board } from "../../components/Board";
+
+import styles from "./styles.module.scss";
 
 const Room: NextPage = () => {
   const { user } = useAuth();
   const { setTimerOptions } = useTimer();
   const router = useRouter();
-  const { hasRoomLoaded, setHasRoomClosed, hasRoomClosed , timerOptions, handleLoadRoomAndAddUser } =
-    useRoom();
+  const {
+    hasRoomLoaded,
+    setHasRoomClosed,
+    hasRoomClosed,
+    timerOptions,
+    handleLoadRoomAndAddUser,
+  } = useRoom();
 
   useEffect(() => {
     if (user === undefined) return;
@@ -30,19 +37,17 @@ const Room: NextPage = () => {
     }
   }, [handleLoadRoomAndAddUser, router, user]);
 
+  useEffect(() => {
+    timerOptions && setTimerOptions(JSON.parse(timerOptions));
+  }, [setTimerOptions, timerOptions]);
 
-  useEffect(()=> {
-    timerOptions && setTimerOptions(JSON.parse(timerOptions))
-  }, [setTimerOptions, timerOptions])
-
-  useEffect(()=> {
-    if(hasRoomClosed){
-      toast.warning('Essa sala foi encerrada');
+  useEffect(() => {
+    if (hasRoomClosed) {
+      toast.warning("Essa sala foi encerrada");
       setHasRoomClosed(false);
       setTimerOptions(undefined);
     }
-  }, [hasRoomClosed, setHasRoomClosed, setTimerOptions])
-
+  }, [hasRoomClosed, setHasRoomClosed, setTimerOptions]);
 
   return (
     <div id="room" className={`container ${styles.roomContainer}`}>
@@ -51,8 +56,9 @@ const Room: NextPage = () => {
       </Head>
       <Header />
       <Pomodoro />
+      <Board />
       <BottomTabNavigator />
-      { !hasRoomLoaded && <Loader /> }
+      {!hasRoomLoaded && <Loader />}
     </div>
   );
 };
