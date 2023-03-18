@@ -1,11 +1,14 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { FiX } from "react-icons/fi";
+import { useIsAdmin } from "../../hooks/useIsAdmin";
 import { useRoom } from "../../hooks/useRoom";
 import { IUser } from "../../interfaces/User";
 import styles from "./styles.module.scss";
 
 export const Board = () => {
   const { room } = useRoom();
+  const isadmin = useIsAdmin();
   const [users, setusers] = useState<IUser[]>();
 
   useEffect(() => {
@@ -47,6 +50,7 @@ export const Board = () => {
               <span>{user.name}</span>
               <p>{user.isAdmin ? "Admin" : "Membro"}</p>
             </div>
+            <FiX className={ isadmin && user.id !== room?.adminId ? styles.showIcon : ''}  size={24} color="var(--dark-red)"/>
           </li>
         ))}
       </ul>
