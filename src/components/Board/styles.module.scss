@@ -1,0 +1,84 @@
+.boardContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-width: 400px;
+  width: 100%;
+  background-color: var(--white);
+  border-radius: 8px;
+  padding: 20px;
+  height: 90%;
+  max-height: 512px;
+  gap: 10px;
+
+  .tabs {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+
+    button {
+      height: 30px;
+      background-color: var(--background);
+      color: var(--grey-blue);
+      font-size: 18px;
+      line-height: 24px;
+      width: 115px;
+      border: 1px solid var(--text);
+    }
+
+    .selected {
+      background-color: var(--white);
+      color: var(--purple);
+      border: 1px solid var(--purple);
+    }
+  }
+
+  .line {
+    width: 100%;
+    border: 1px solid var(--light-grey);
+  }
+
+  .usersList {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    list-style-type: none;
+    list-style-position: outside;
+    padding-left: 0;
+
+    li {
+      display: flex;
+      flex-direction: row;
+      height: 40px;
+      width: 100%;
+      gap: 10px;
+
+      .avatar {
+        width: 40px;
+        height: 40px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+      }
+
+      .userInfo {
+        display: flex;
+        flex-direction: column;
+
+        span{
+          font-size: 18px;
+          color: var(--grey-blue);
+        }
+
+        p{
+          font-size: 16px;
+          color: var(--grey);
+          margin:0;
+        }
+      }
+    }
+  }
+}
