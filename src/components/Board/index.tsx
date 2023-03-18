@@ -7,7 +7,7 @@ import { IUser } from "../../interfaces/User";
 import styles from "./styles.module.scss";
 
 export const Board = () => {
-  const { room } = useRoom();
+  const { room, handleRemoveUserfromRoom } = useRoom();
   const isadmin = useIsAdmin();
   const [users, setusers] = useState<IUser[]>();
 
@@ -50,7 +50,7 @@ export const Board = () => {
               <span>{user.name}</span>
               <p>{user.isAdmin ? "Admin" : "Membro"}</p>
             </div>
-            <FiX className={ isadmin && user.id !== room?.adminId ? styles.showIcon : ''}  size={24} color="var(--dark-red)"/>
+            <FiX onClick={() => handleRemoveUserfromRoom(user.id)} className={ isadmin && user.id !== room?.adminId ? styles.showIcon : ''}  size={24} color="var(--dark-red)"/>
           </li>
         ))}
       </ul>
