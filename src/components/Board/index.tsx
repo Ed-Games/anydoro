@@ -50,7 +50,15 @@ export const Board = () => {
               <span>{user.name}</span>
               <p>{user.isAdmin ? "Admin" : "Membro"}</p>
             </div>
-            <FiX onClick={() => handleRemoveUserfromRoom(user.id)} className={ isadmin && user.id !== room?.adminId ? styles.showIcon : ''}  size={24} color="var(--dark-red)"/>
+
+            <FiX
+              onClick={() => handleRemoveUserfromRoom(user.id)}
+              className={
+                isadmin && user.id !== room?.adminId ? styles.showIcon : ""
+              }
+              size={24}
+              color="var(--dark-red)"
+            />
           </li>
         ))}
       </ul>
