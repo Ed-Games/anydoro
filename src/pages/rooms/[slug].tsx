@@ -10,6 +10,7 @@ import { BottomTabNavigator } from "../../components/BottomTabNavigator";
 import { useTimer } from "../../hooks/useTimer";
 import { Loader } from "../../components/Loader/indext";
 import { toast } from "react-toastify";
+import styles from './styles.module.scss';
 
 const Room: NextPage = () => {
   const { user } = useAuth();
@@ -44,7 +45,7 @@ const Room: NextPage = () => {
 
 
   return (
-    <div id="room" className="container">
+    <div id="room" className={`container ${styles.roomContainer}`}>
       <Head>
         <title>Anydoro | Timer </title>
       </Head>
