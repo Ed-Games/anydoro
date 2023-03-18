@@ -1,4 +1,4 @@
-import { onValue, ref, set } from "firebase/database";
+import { onValue, ref, remove, set } from "firebase/database";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -29,6 +29,7 @@ interface IRoomContextProvider {
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
+  handleRemoveUserfromRoom: (userId: string) => Promise<void>;
   handleSetRoomTimer: (
     time: number,
     mode: string,
@@ -123,6 +124,11 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     [router]
   );
 
+  const handleRemoveUserfromRoom = async(userId: string) => {
+    const userRef = ref(database, `rooms/${router.query.slug}/users/${userId}`);
+    await remove(userRef);
+  }
+
   const handleCloseRoom = async () => {
     if (router.query.slug) {
       const roomRef = ref(database, `rooms/${router.query.slug}`);
@@ -176,6 +182,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
         setHasRoomClosed,
         handleCreateRoom,
         handleLoadRoomAndAddUser,
+        handleRemoveUserfromRoom,
         handleCloseRoom,
         handleSetRoomTimer,
         handleSetRoomTimerOptions,
