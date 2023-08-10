@@ -52,7 +52,7 @@ export const Board = () => {
             </div>
 
             <FiX
-              onClick={() => handleRemoveUserfromRoom(user.id)}
+              onClick={() => handleRemoveUserfromRoom(user)}
               className={
                 isadmin && user.id !== room?.adminId ? styles.showIcon : ""
               }
