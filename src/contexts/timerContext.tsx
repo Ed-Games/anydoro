@@ -116,12 +116,11 @@ export const TimerContextProvider = ({
   }, [isActive, resetTimer, timerOptions]);
 
   useEffect(() => {
-    isActive && isAdmin && handleSetRoomTimer(time, mode, isActive);
-  }, [handleSetRoomTimer, isActive, isAdmin, mode, time]);
-
-  useEffect(() => {
-    hasFinished && isAdmin && handleSetRoomTimer(time, mode, isActive);
+    if(isActive || hasFinished ) {
+      isAdmin && handleSetRoomTimer(time, mode, isActive);
+    }
   }, [handleSetRoomTimer, hasFinished, isActive, isAdmin, mode, time]);
+
 
   return (
     <TimerContext.Provider
