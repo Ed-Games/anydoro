@@ -29,7 +29,7 @@ const Room: NextPage = () => {
   useEffect(() => {
     if (user === undefined) return;
 
-    if (!user) {
+    if (!user || user.removed) {
       router.push("/");
       return;
     } else {
