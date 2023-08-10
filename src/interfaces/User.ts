@@ -3,4 +3,5 @@ export interface IUser {
   name: string;
   avatar: string | null;
   isAdmin?: boolean;
+  removed?: boolean;
 }
