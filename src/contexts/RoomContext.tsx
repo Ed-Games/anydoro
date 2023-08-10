@@ -1,4 +1,4 @@
-import { onValue, ref, remove, set } from "firebase/database";
+import { onValue, ref, set, update } from "firebase/database";
 import { useRouter } from "next/router";
 import {
   createContext,
@@ -29,7 +29,7 @@ interface IRoomContextProvider {
   handleCreateRoom: (name: string, user: IUser) => Promise<void>;
   handleCloseRoom: () => Promise<void>;
   handleLoadRoomAndAddUser: (user: IUser) => void;
-  handleRemoveUserfromRoom: (userId: string) => Promise<void>;
+  handleRemoveUserfromRoom: (user: IUser) => Promise<void>;
   handleSetRoomTimer: (
     time: number,
     mode: string,
@@ -124,15 +124,18 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
     [router]
   );
 
-  const handleRemoveUserfromRoom = async(userId: string) => {
-    const userRef = ref(database, `rooms/${router.query.slug}/users/${userId}`);
-    await remove(userRef);
-  }
+  const handleRemoveUserfromRoom = async (user: IUser) => {
+    const userRef = ref(
+      database,
+      `rooms/${router.query.slug}/users/${user.id}`
+    );
+    await update(userRef, { removed: true });
+  };
 
   const handleCloseRoom = async () => {
     if (router.query.slug) {
       const roomRef = ref(database, `rooms/${router.query.slug}`);
-      await set(roomRef, { ...room, endedAt: Date.now() });
+      await update(roomRef, { endedAt: Date.now() });
       setHasRoomClosed(true);
     }
   };
@@ -145,8 +148,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
           return;
         }
         room?.currentTimerMode &&
-          (await set(roomRef, {
-            ...room,
+          (await update(roomRef, {
             currentTimerValue: time,
             currentTimerMode: mode,
             isActive,
@@ -159,7 +161,7 @@ export const RoomContextProvider = ({ children }: IRoomContextProps) => {
   const handleSetRoomTimerOptions = async (timerOptions: ITimerOptions) => {
     if (router.query.slug) {
       const roomRef = ref(database, `rooms/${router.query.slug}`);
-      await set(roomRef, { ...room, ...timerOptions });
+      await update(roomRef, { ...timerOptions });
     }
   };
 
