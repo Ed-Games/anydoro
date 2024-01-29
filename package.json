@@ -11,7 +11,7 @@
   "author": "Ed-Games",
   "license": "MIT",
   "dependencies": {
-    "firebase": "^9.16.0",
+    "firebase": "^10.7.2",
     "formik": "^2.2.9",
     "next": "12.2.5",
     "react": "18.2.0",
